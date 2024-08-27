@@ -1,7 +1,6 @@
 ﻿using API_APSNET.DTO;
 using API_APSNET.Models;
 using API_APSNET.Service.Turma;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_APSNET.Controllers
@@ -11,7 +10,6 @@ namespace API_APSNET.Controllers
     public class TurmaController : ControllerBase
     {
         private readonly ITurma _turmaInterface;
-        private readonly TurmaService _turmaService;
         public TurmaController(ITurma turmaInterface) { _turmaInterface = turmaInterface; }
 
         [HttpGet("turmas")]
@@ -20,8 +18,8 @@ namespace API_APSNET.Controllers
             return await _turmaInterface.BuscarTodasAsTurmas();
         }
 
-        [HttpGet("turma/{idTurma}")]
-        public async Task<ActionResult<ResponseModel<Turma>>> BuscarTodasAsTurmas(int idTurma)
+        [HttpGet("turmas/{idTurma}")]
+        public async Task<ActionResult<ResponseModel<Turma>>> BuscarTurmasPorId(int idTurma)
         {
             return await _turmaInterface.BuscarTurmasPorId(idTurma);
         }
