@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API_APSNET.Service.Disciplina
 {
-    public class DisciplinaService : IDisciplina
+    public class DisciplinaService
     {
         private readonly AppDbContext _context;
         public DisciplinaService(AppDbContext context){_context = context;}
@@ -71,12 +71,12 @@ namespace API_APSNET.Service.Disciplina
             }
         }
 
-        public async Task<ResponseModel<List<Models.Disciplina>>> BuscarTodasAsDisciplinas()
+        public async Task<ResponseModel<List<Models.Disciplina>>> BuscarTodasAsDisciplinas(Paginacao paginaParametros)
         {
             ResponseModel<List<Models.Disciplina>> resposta = new ResponseModel<List<Models.Disciplina>>();
             try
             {
-                var disciplina = await _context.Disciplinas.ToListAsync();
+                var disciplina = await _context.Disciplinas.Skip(paginaParametros.Pagina).Take(paginaParametros.quantidade).ToListAsync();
                 resposta.Dados = disciplina;
                 return resposta;
             }

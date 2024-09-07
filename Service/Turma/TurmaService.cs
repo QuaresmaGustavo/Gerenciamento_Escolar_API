@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API_APSNET.Service.Turma
 {
-    public class TurmaService : ITurma
+    public class TurmaService
     {
         private readonly AppDbContext _context;
         public TurmaService(AppDbContext context) { _context = context; }
@@ -36,12 +36,12 @@ namespace API_APSNET.Service.Turma
             }
         }
 
-        public async Task<ResponseModel<List<Models.Turma>>> BuscarTodasAsTurmas()
+        public async Task<ResponseModel<List<Models.Turma>>> BuscarTodasAsTurmas(Paginacao paginacaoParametros)
         {
             ResponseModel<List<Models.Turma>> resposta = new ResponseModel<List<Models.Turma>>();
             try
             {
-                var turmas = await _context.Turmas.ToListAsync();
+                var turmas = await _context.Turmas.Skip(paginacaoParametros.Pagina).Take(paginacaoParametros.quantidade).ToListAsync();
                 resposta.Dados = turmas;
                 return resposta;
             }

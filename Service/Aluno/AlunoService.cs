@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API_APSNET.Service.Aluno
 {
-    public class AlunoService : IAluno
+    public class AlunoService
     {
         private readonly AppDbContext _context;
         public AlunoService(AppDbContext context) { _context = context; }
@@ -70,12 +70,12 @@ namespace API_APSNET.Service.Aluno
             }
         }
 
-        public async Task<ResponseModel<List<Models.Aluno>>> BuscarTodasOsAlunos()
+        public async Task<ResponseModel<List<Models.Aluno>>> BuscarTodasOsAlunos(Paginacao paginaParametros)
         {
             ResponseModel<List<Models.Aluno>> resposta = new ResponseModel<List<Models.Aluno>>();
             try
             {
-                var aluno = await _context.Alunos.ToListAsync();
+                var aluno = await _context.Alunos.Skip(paginaParametros.Pagina).Take(paginaParametros.quantidade).ToListAsync();
                 resposta.Dados = aluno;
                 return resposta;
             }

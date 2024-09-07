@@ -1,4 +1,7 @@
 using API_APSNET.Data;
+using API_APSNET.Service.Aluno;
+using API_APSNET.Service.Disciplina;
+using API_APSNET.Service.Professor;
 using API_APSNET.Service.Turma;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,8 +18,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(builder.
                      new MySqlServerVersion(new Version(8, 0, 21))));
 
 
-builder.Services.AddScoped<ITurma, TurmaService>();
-
+builder.Services.AddScoped<AlunoService>();
+builder.Services.AddScoped<DisciplinaService>();
+builder.Services.AddScoped<ProfessorService>();
+builder.Services.AddScoped<TurmaService>();
 
 var app = builder.Build();
 

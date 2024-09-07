@@ -9,41 +9,41 @@ namespace API_APSNET.Controllers
     [ApiController]
     public class ProfessorController : ControllerBase
     {
-        private readonly IProfessor _ProfessorInterface;
+        private readonly ProfessorService _ProfessorService;
 
-        public ProfessorController(IProfessor professorInterface)
+        public ProfessorController(ProfessorService professorService)
         {
-            _ProfessorInterface = professorInterface;
+            _ProfessorService = professorService;
         }
 
         [HttpGet("Professores")]
-        public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> BuscarTodasOsProfessores()
+        public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> BuscarTodasOsProfessores([FromQuery] Paginacao paginaParametros)
         {
-            return await _ProfessorInterface.BuscarTodasOsProfessores();
+            return await _ProfessorService.BuscarTodasOsProfessores(paginaParametros);
         }
 
         [HttpGet("Professores/{idProfessor}")]
         public async Task<ActionResult<ResponseModel<Models.Professor>>> BuscarProfessorPorId(int id)
         {
-            return await _ProfessorInterface.BuscarProfessorPorId(id);
+            return await _ProfessorService.BuscarProfessorPorId(id);
         }
 
         [HttpPost("CadastrarProfessor")]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> CadastrarProfessor(ProfessorDTO professor)
         {
-            return await _ProfessorInterface.CadastrarProfessor(professor);
+            return await _ProfessorService.CadastrarProfessor(professor);
         }
 
         [HttpPut("AtualizarProfessor")]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> AtualizarProfessor(ProfessorDTO professorEditado)
         {
-            return await _ProfessorInterface.AtualizarProfessor(professorEditado);
+            return await _ProfessorService.AtualizarProfessor(professorEditado);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> DeletarProfessor(int id)
         {
-            return await _ProfessorInterface.DeletarProfessor(id);
+            return await _ProfessorService.DeletarProfessor(id);
         }
     }
 }

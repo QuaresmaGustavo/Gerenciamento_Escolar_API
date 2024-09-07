@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API_APSNET.Service.Professor
 {
-    public class ProfessorService : IProfessor
+    public class ProfessorService
     {
         private readonly AppDbContext _context;
         public ProfessorService(AppDbContext context) { _context = context; }
@@ -71,12 +71,12 @@ namespace API_APSNET.Service.Professor
             }
         }
 
-        public async Task<ResponseModel<List<Models.Professor>>> BuscarTodasOsProfessores()
+        public async Task<ResponseModel<List<Models.Professor>>> BuscarTodasOsProfessores(Paginacao paginaParametros)
         {
             ResponseModel<List<Models.Professor>> resposta = new ResponseModel<List<Models.Professor>>();
             try
             {
-                var professor = await _context.Professores.ToListAsync();
+                var professor = await _context.Professores.Skip(paginaParametros.Pagina).Take(paginaParametros.quantidade).ToListAsync();
                 resposta.Dados = professor;
                 return resposta;
             }

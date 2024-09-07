@@ -9,37 +9,37 @@ namespace API_APSNET.Controllers
     [ApiController]
     public class AlunosController : ControllerBase
     {
-        private readonly IAluno _AlunoInterface;
+        private readonly AlunoService _AlunoService;
 
-        public AlunosController(IAluno alunoInterface){_AlunoInterface = alunoInterface;}
+        public AlunosController(AlunoService alunoInterface){ _AlunoService = alunoInterface;}
 
         [HttpGet("Alunos")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarTodasOsAlunos()
+        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarTodasOsAlunos([FromQuery] Paginacao paginaParametros)
         {
-            return await _AlunoInterface.BuscarTodasOsAlunos();
+            return await _AlunoService.BuscarTodasOsAlunos(paginaParametros);
         }
 
         [HttpGet("Alunos/{idProfessor}")]
         public async Task<ActionResult<ResponseModel<Models.Aluno>>> BuscarAlunoPorId(int id)
         {
-            return await _AlunoInterface.BuscarAlunoPorId(id);
+            return await _AlunoService.BuscarAlunoPorId(id);
         }
 
         [HttpPost("CadastrarAluno")]
         public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> CadastrarAluno(AlunoDTO aluno)
         {
-            return await _AlunoInterface.CadastrarAluno(aluno);
+            return await _AlunoService.CadastrarAluno(aluno);
         }
 
         [HttpPut("AtualizarAluno")]
         public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> AtualizarAluno(AlunoDTO alunoEditado)
         {
-            return await _AlunoInterface.AtualizarAluno(alunoEditado);
+            return await _AlunoService.AtualizarAluno(alunoEditado);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> DeletarAluno(int id) {
-            return await _AlunoInterface.DeletarAluno(id);
+            return await _AlunoService.DeletarAluno(id);
         }
     }
 }

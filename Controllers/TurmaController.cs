@@ -9,37 +9,37 @@ namespace API_APSNET.Controllers
     [ApiController]
     public class TurmaController : ControllerBase
     {
-        private readonly ITurma _turmaInterface;
-        public TurmaController(ITurma turmaInterface) { _turmaInterface = turmaInterface; }
+        private readonly TurmaService _turmaService;
+        public TurmaController(TurmaService turmaService) { _turmaService = turmaService; }
 
         [HttpGet("turmas")]
-        public async Task<ActionResult<ResponseModel<List<Turma>>>> BuscarTodasAsTurmas()
+        public async Task<ActionResult<ResponseModel<List<Turma>>>> BuscarTodasAsTurmas([FromQuery] Paginacao paginacaoParametros)
         {
-            return await _turmaInterface.BuscarTodasAsTurmas();
+            return await _turmaService.BuscarTodasAsTurmas(paginacaoParametros);
         }
 
         [HttpGet("turmas/{idTurma}")]
         public async Task<ActionResult<ResponseModel<Turma>>> BuscarTurmasPorId(int idTurma)
         {
-            return await _turmaInterface.BuscarTurmasPorId(idTurma);
+            return await _turmaService.BuscarTurmasPorId(idTurma);
         }
 
         [HttpPost("GerarTurma")]
         public async Task<ActionResult<ResponseModel<List<Turma>>>> GerarTurmas(TurmaDTO turma)
         {
-            return await _turmaInterface.GerarTurmas(turma);
+            return await _turmaService.GerarTurmas(turma);
         }
 
         [HttpPut("AtualizarTurma")]
         public async Task<ActionResult<ResponseModel<List<Turma>>>> AtualizarTurmas(TurmaDTO turmaEditada)
         {
-            return await _turmaInterface.AtualizarTurmas(turmaEditada);
+            return await _turmaService.AtualizarTurmas(turmaEditada);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseModel<List<Turma>>>> DeletarTurma(int id)
         {
-            return await _turmaInterface.DeletarTurma(id);
+            return await _turmaService.DeletarTurma(id);
         }
     }
 }

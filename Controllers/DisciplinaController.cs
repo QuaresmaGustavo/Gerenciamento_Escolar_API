@@ -10,41 +10,41 @@ namespace API_APSNET.Controllers
     [ApiController]
     public class DisciplinaController : ControllerBase
     {
-        private readonly IDisciplina _DisciplinaInterface;
+        private readonly DisciplinaService _DisciplinaService;
 
-        public DisciplinaController(IDisciplina disciplinaInterface)
+        public DisciplinaController(DisciplinaService disciplinaService)
         {
-            _DisciplinaInterface = disciplinaInterface;
+            _DisciplinaService = disciplinaService;
         }
 
         [HttpGet("Disciplinas")]
-        public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> BuscarTodasAsDisciplinas()
+        public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> BuscarTodasAsDisciplinas([FromQuery] Paginacao paginaParametros)
         {
-            return await _DisciplinaInterface.BuscarTodasAsDisciplinas();
+            return await _DisciplinaService.BuscarTodasAsDisciplinas(paginaParametros);
         }
 
         [HttpGet("Disciplinas/{idDisciplina}")]
         public async Task<ActionResult<ResponseModel<Models.Disciplina>>> BuscarTodasAsDisciplinas(int idDisciplina)
         {
-            return await _DisciplinaInterface.BuscarDisciplinaPorId(idDisciplina);
+            return await _DisciplinaService.BuscarDisciplinaPorId(idDisciplina);
         }
 
         [HttpPost("GerarDisciplina")]
         public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> GerarDisciplina(DisciplinaDTO disciplina)
         {
-            return await _DisciplinaInterface.GerarDisciplina(disciplina);
+            return await _DisciplinaService.GerarDisciplina(disciplina);
         }
 
         [HttpPut("AtualizarDisciplina")]
         public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> AtualizarDisciplina(DisciplinaDTO disciplinaEditada)
         {
-            return await _DisciplinaInterface.AtualizarDisciplina(disciplinaEditada);
+            return await _DisciplinaService.AtualizarDisciplina(disciplinaEditada);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> DeletarDisciplina(int id)
         {
-            return await _DisciplinaInterface.DeletarDisciplina(id);
+            return await _DisciplinaService.DeletarDisciplina(id);
         }
     }
 }
