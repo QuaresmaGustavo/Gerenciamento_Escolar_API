@@ -12,5 +12,20 @@ namespace API_APSNET.Data
         public DbSet<Professor> Professores { get; set; }
         public DbSet<Aluno> Alunos { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AlunoDisciplina>()
+                .HasKey(ad => new { ad.IdAluno, ad.IdDisciplina });
+
+            modelBuilder.Entity<AlunoDisciplina>()
+                .HasOne(ad => ad.Aluno)
+                .WithMany(a => a.Disciplinas)
+                .HasForeignKey(ad => ad.IdAluno);
+
+            modelBuilder.Entity<AlunoDisciplina>()
+                .HasOne(ad => ad.Disciplina)
+                .WithMany(d => d.Alunos)
+                .HasForeignKey(ad => ad.IdDisciplina);
+        }
     }
 }

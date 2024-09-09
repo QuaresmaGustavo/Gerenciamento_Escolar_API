@@ -12,25 +12,25 @@ namespace API_APSNET.Controllers
         private readonly TurmaService _turmaService;
         public TurmaController(TurmaService turmaService) { _turmaService = turmaService; }
 
-        [HttpGet("turmas")]
+        [HttpGet("todos")]
         public async Task<ActionResult<ResponseModel<List<Turma>>>> BuscarTodasAsTurmas([FromQuery] Paginacao paginacaoParametros)
         {
             return await _turmaService.BuscarTodasAsTurmas(paginacaoParametros);
         }
 
-        [HttpGet("turmas/{idTurma}")]
-        public async Task<ActionResult<ResponseModel<Turma>>> BuscarTurmasPorId(int idTurma)
+        [HttpGet("{nome}")]
+        public async Task<ActionResult<ResponseModel<Turma>>> BuscarTurmasPorNome(string nome)
         {
-            return await _turmaService.BuscarTurmasPorId(idTurma);
+            return await _turmaService.BuscarTurmasPorNome(nome);
         }
 
         [HttpPost("GerarTurma")]
-        public async Task<ActionResult<ResponseModel<List<Turma>>>> GerarTurmas(TurmaDTO turma)
+        public async Task<ActionResult<ResponseModel<Turma>>> GerarTurmas(TurmaDTO turma)
         {
             return await _turmaService.GerarTurmas(turma);
         }
 
-        [HttpPut("AtualizarTurma")]
+        [HttpPut("Atualizar")]
         public async Task<ActionResult<ResponseModel<List<Turma>>>> AtualizarTurmas(TurmaDTO turmaEditada)
         {
             return await _turmaService.AtualizarTurmas(turmaEditada);

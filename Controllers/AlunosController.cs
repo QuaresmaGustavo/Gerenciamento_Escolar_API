@@ -13,25 +13,25 @@ namespace API_APSNET.Controllers
 
         public AlunosController(AlunoService alunoInterface){ _AlunoService = alunoInterface;}
 
-        [HttpGet("Alunos")]
+        [HttpGet("todos")]
         public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarTodasOsAlunos([FromQuery] Paginacao paginaParametros)
         {
             return await _AlunoService.BuscarTodasOsAlunos(paginaParametros);
         }
 
-        [HttpGet("Alunos/{idProfessor}")]
-        public async Task<ActionResult<ResponseModel<Models.Aluno>>> BuscarAlunoPorId(int id)
+        [HttpGet("{nome}")]
+        public async Task<ActionResult<ResponseModel<Models.Aluno>>> BuscarAlunoPorNome(string nome)
         {
-            return await _AlunoService.BuscarAlunoPorId(id);
+            return await _AlunoService.BuscarAlunoPorNome(nome);
         }
 
-        [HttpPost("CadastrarAluno")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> CadastrarAluno(AlunoDTO aluno)
+        [HttpPost("Cadastrar")]
+        public async Task<ActionResult<ResponseModel<Models.Aluno>>> CadastrarAluno(AlunoDTO aluno)
         {
             return await _AlunoService.CadastrarAluno(aluno);
         }
 
-        [HttpPut("AtualizarAluno")]
+        [HttpPut("Atualizar")]
         public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> AtualizarAluno(AlunoDTO alunoEditado)
         {
             return await _AlunoService.AtualizarAluno(alunoEditado);

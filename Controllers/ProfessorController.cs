@@ -16,25 +16,25 @@ namespace API_APSNET.Controllers
             _ProfessorService = professorService;
         }
 
-        [HttpGet("Professores")]
+        [HttpGet("todos")]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> BuscarTodasOsProfessores([FromQuery] Paginacao paginaParametros)
         {
             return await _ProfessorService.BuscarTodasOsProfessores(paginaParametros);
         }
 
-        [HttpGet("Professores/{idProfessor}")]
-        public async Task<ActionResult<ResponseModel<Models.Professor>>> BuscarProfessorPorId(int id)
+        [HttpGet("{nome}")]
+        public async Task<ActionResult<ResponseModel<Models.Professor>>> BuscarProfessorPorNome(string nome)
         {
-            return await _ProfessorService.BuscarProfessorPorId(id);
+            return await _ProfessorService.BuscarProfessorPorNome(nome);
         }
 
-        [HttpPost("CadastrarProfessor")]
-        public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> CadastrarProfessor(ProfessorDTO professor)
+        [HttpPost("Cadastrar")]
+        public async Task<ActionResult<ResponseModel<Models.Professor>>> CadastrarProfessor(ProfessorDTO professor)
         {
             return await _ProfessorService.CadastrarProfessor(professor);
         }
 
-        [HttpPut("AtualizarProfessor")]
+        [HttpPut("Atualizar")]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> AtualizarProfessor(ProfessorDTO professorEditado)
         {
             return await _ProfessorService.AtualizarProfessor(professorEditado);

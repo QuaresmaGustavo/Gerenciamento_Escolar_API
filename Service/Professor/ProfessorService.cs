@@ -39,22 +39,6 @@ namespace API_APSNET.Service.Professor
             }
         }
 
-        public async Task<ResponseModel<Models.Professor>> BuscarProfessorPorId(int id)
-        {
-            ResponseModel<Models.Professor> resposta = new ResponseModel<Models.Professor>();
-            try
-            {
-                var professor = await _context.Professores.FirstOrDefaultAsync(p => p.Id == id);
-                resposta.Dados = professor;
-                return resposta;
-            }
-            catch (Exception ex)
-            {
-                resposta.Mensagem = ex.Message;
-                return resposta;
-            }
-        }
-
         public async Task<ResponseModel<Models.Professor>> BuscarProfessorPorNome(string nome)
         {
             ResponseModel<Models.Professor> resposta = new ResponseModel<Models.Professor>();
@@ -87,19 +71,27 @@ namespace API_APSNET.Service.Professor
             }
         }
 
-        public async Task<ResponseModel<List<Models.Professor>>> CadastrarProfessor(ProfessorDTO professor)
+        public async Task<ResponseModel<Models.Professor>> CadastrarProfessor(ProfessorDTO professor)
         {
-            ResponseModel<List<Models.Professor>> resposta = new ResponseModel<List<Models.Professor>>();
+            ResponseModel<Models.Professor> resposta = new ResponseModel<Models.Professor>();
             try
             {
+                var verificarprofessor = await BuscarProfessorPorNome(professor.Nome);
+                if (verificarprofessor.Dados != null && verificarprofessor.Dados.Nome.Equals(professor.Nome))
+                {
+                    resposta.Mensagem = "Este professor já existe";
+                    return resposta;
+                }
+
                 var novoProfessor = new Models.Professor(){
                     Nome = professor.Nome,
-                    Idade = professor.Idade
+                    Idade = professor.Idade,
+                    IdDisciplina = professor.IdDisciplina
                 };
                 _context.Add(novoProfessor);
                 await _context.SaveChangesAsync();
 
-                resposta.Dados = await _context.Professores.ToListAsync();
+                resposta.Dados = await _context.Professores.OrderByDescending(p => p.Nome == professor.Nome).FirstOrDefaultAsync();
                 return resposta;
             }
             catch (Exception ex)

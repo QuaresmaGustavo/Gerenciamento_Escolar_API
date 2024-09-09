@@ -52,22 +52,6 @@ namespace API_APSNET.Service.Turma
             }
         }
 
-        public async Task<ResponseModel<Models.Turma>> BuscarTurmasPorId(int id)
-        {
-            ResponseModel<Models.Turma> resposta = new ResponseModel<Models.Turma>();
-            try
-            {
-                var turma = await _context.Turmas.FirstOrDefaultAsync(t => t.Id == id);
-                resposta.Dados = turma;
-                return resposta;
-            }
-            catch (Exception ex)
-            {
-                resposta.Mensagem = ex.Message;
-                return resposta;
-            }
-        }
-
         public async Task<ResponseModel<Models.Turma>> BuscarTurmasPorNome(string nome)
         {
             ResponseModel<Models.Turma> resposta = new ResponseModel<Models.Turma>();
@@ -112,11 +96,18 @@ namespace API_APSNET.Service.Turma
             }
         }
 
-        public async Task<ResponseModel<List<Models.Turma>>> GerarTurmas(DTO.TurmaDTO turma)
+        public async Task<ResponseModel<Models.Turma>> GerarTurmas(DTO.TurmaDTO turma)
         {
-            ResponseModel<List<Models.Turma>> resposta = new ResponseModel<List<Models.Turma>>();
+            ResponseModel<Models.Turma> resposta = new ResponseModel<Models.Turma>();
             try
             {
+                var verificarTurma = await BuscarTurmasPorNome(turma.Nome);
+                if (verificarTurma.Dados != null && verificarTurma.Dados.Nome.Equals(turma.Nome))
+                {
+                    resposta.Mensagem = "Não é permitido cadastrar turma com o mesmo nome.";
+                    return resposta;
+                }
+
                 var novaTurma = new Models.Turma()
                 {
                     Nome = turma.Nome
@@ -124,7 +115,7 @@ namespace API_APSNET.Service.Turma
                 _context.Add(novaTurma);
                 await _context.SaveChangesAsync();
 
-                resposta.Dados = await _context.Turmas.ToListAsync();
+                resposta.Dados = await _context.Turmas.OrderByDescending(t => t.Nome == turma.Nome).FirstOrDefaultAsync();
                 return resposta;
             }
             catch (Exception ex)

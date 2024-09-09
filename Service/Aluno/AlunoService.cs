@@ -38,22 +38,6 @@ namespace API_APSNET.Service.Aluno
             }
         }
 
-        public async Task<ResponseModel<Models.Aluno>> BuscarAlunoPorId(int id)
-        {
-            ResponseModel<Models.Aluno> resposta = new ResponseModel<Models.Aluno>();
-            try
-            {
-                var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.Id == id);
-                resposta.Dados = aluno;
-                return resposta;
-            }
-            catch (Exception ex)
-            {
-                resposta.Mensagem = ex.Message;
-                return resposta;
-            }
-        }
-
         public async Task<ResponseModel<Models.Aluno>> BuscarAlunoPorNome(string nome)
         {
             ResponseModel<Models.Aluno> resposta = new ResponseModel<Models.Aluno>();
@@ -86,11 +70,18 @@ namespace API_APSNET.Service.Aluno
             }
         }
 
-        public async Task<ResponseModel<List<Models.Aluno>>> CadastrarAluno(AlunoDTO aluno)
+        public async Task<ResponseModel<Models.Aluno>> CadastrarAluno(AlunoDTO aluno)
         {
-            ResponseModel<List<Models.Aluno>> resposta = new ResponseModel<List<Models.Aluno>>();
+            ResponseModel<Models.Aluno> resposta = new ResponseModel<Models.Aluno>();
             try
             {
+                var verificarAluno = await BuscarAlunoPorNome(aluno.Nome);
+                if (verificarAluno.Dados != null && verificarAluno.Dados.Nome.Equals(aluno.Nome))
+                {
+                    resposta.Mensagem = "Esta aluno ja existe!";
+                    return resposta;
+                }
+
                 var novoAluno = new Models.Aluno()
                 {
                     Nome = aluno.Nome,
@@ -99,7 +90,7 @@ namespace API_APSNET.Service.Aluno
                 _context.Add(novoAluno);
                 await _context.SaveChangesAsync();
 
-                resposta.Dados = await _context.Alunos.ToListAsync();
+                resposta.Dados = await _context.Alunos.OrderByDescending(a => a.Nome == aluno.Nome).FirstOrDefaultAsync();
                 return resposta;
             }
             catch (Exception ex)

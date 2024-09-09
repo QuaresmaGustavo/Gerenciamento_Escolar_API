@@ -39,22 +39,6 @@ namespace API_APSNET.Service.Disciplina
             }
         }
 
-        public async Task<ResponseModel<Models.Disciplina>> BuscarDisciplinaPorId(int id)
-        {
-            ResponseModel<Models.Disciplina> resposta = new ResponseModel<Models.Disciplina>();
-            try
-            {
-                var disciplina = await _context.Disciplinas.FirstOrDefaultAsync(d => d.Id == id);
-                resposta.Dados = disciplina;
-                return resposta;
-            }
-            catch (Exception ex)
-            {
-                resposta.Mensagem = ex.Message;
-                return resposta;
-            }
-        }
-
         public async Task<ResponseModel<Models.Disciplina>> BuscarDisciplinaPorNome(string nome)
         {
             ResponseModel<Models.Disciplina> resposta = new ResponseModel<Models.Disciplina>();
@@ -115,19 +99,27 @@ namespace API_APSNET.Service.Disciplina
             }
         }
 
-        public async Task<ResponseModel<List<Models.Disciplina>>> GerarDisciplina(DisciplinaDTO disciplina)
+        public async Task<ResponseModel<Models.Disciplina>> GerarDisciplina(DisciplinaDTO disciplina)
         {
-            ResponseModel<List<Models.Disciplina>> resposta = new ResponseModel<List<Models.Disciplina>>();
+            ResponseModel<Models.Disciplina> resposta = new ResponseModel<Models.Disciplina>();
             try
             {
+                var verificarDisciplina = await BuscarDisciplinaPorNome(disciplina.Nome);
+                if (verificarDisciplina.Dados != null && verificarDisciplina.Dados.Nome.Equals(disciplina.Nome))
+                {
+                    resposta.Mensagem = "Esta Disciplina ja existe!";
+                    return resposta;
+                }
+
                 var novaDisciplina = new Models.Disciplina(){
                     Nome = disciplina.Nome,
-                    Descricao = disciplina.Descricao
+                    Descricao = disciplina.Descricao,
+                    TurmaID = disciplina.TurmaID
                 };
                 _context.Add(novaDisciplina);
                 await _context.SaveChangesAsync();
 
-                resposta.Dados = await _context.Disciplinas.ToListAsync();
+                resposta.Dados = await _context.Disciplinas.OrderByDescending(d => d.Nome == disciplina.Nome).FirstOrDefaultAsync();
                 return resposta;
             }
             catch (Exception ex)
