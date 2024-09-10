@@ -55,6 +55,30 @@ namespace API_APSNET.Service.Disciplina
             }
         }
 
+        public async Task<ResponseModel<List<Models.Aluno>>> BuscarAlunoPelaDisciplina(int disciplinaID)
+        {
+            ResponseModel<List<Models.Aluno>> resposta = new ResponseModel<List<Models.Aluno>>();
+            try
+            {
+                var disciplina = await _context.Disciplinas.Include(d => d.Alunos).ThenInclude(ad => ad.Aluno).FirstOrDefaultAsync();
+
+                if(disciplina == null)
+                {
+                    resposta.Mensagem = "Disciplina não encontrada";
+                    return resposta;
+                }
+
+                var aluno = disciplina.Alunos.Select(ad => ad.Aluno).ToList();
+                resposta.Dados = aluno;
+                return resposta;
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                return resposta;
+            }
+        }
+
         public async Task<ResponseModel<List<Models.Disciplina>>> BuscarTodasAsDisciplinas(Paginacao paginaParametros)
         {
             ResponseModel<List<Models.Disciplina>> resposta = new ResponseModel<List<Models.Disciplina>>();

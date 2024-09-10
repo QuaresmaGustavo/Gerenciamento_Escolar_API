@@ -70,6 +70,33 @@ namespace API_APSNET.Service.Aluno
             }
         }
 
+        public async Task<ResponseModel<List<Models.Disciplina>>> BuscarDisciplinaPeloAluno(int alunoId)
+        {
+            ResponseModel<List<Models.Disciplina>> resposta = new ResponseModel<List<Models.Disciplina>>();
+            try
+            {
+                var aluno = await _context.Alunos
+                                    .Include(a => a.Disciplinas)
+                                    .ThenInclude(ad => ad.Disciplina)
+                                    .FirstOrDefaultAsync(a => a.Id == alunoId);
+
+                if (aluno == null) {
+                    resposta.Mensagem = "Aluno não encontrado";
+                    return resposta;
+                }
+
+                var disciplina = aluno.Disciplinas.Select(ad => ad.Disciplina).ToList();
+
+                resposta.Dados = disciplina;
+                return resposta;
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                return resposta;
+            }
+        }
+
         public async Task<ResponseModel<Models.Aluno>> CadastrarAluno(AlunoDTO aluno)
         {
             ResponseModel<Models.Aluno> resposta = new ResponseModel<Models.Aluno>();

@@ -16,7 +16,8 @@ namespace API_APSNET.Service.Turma
             {
                 var turma = await _context.Turmas.FirstOrDefaultAsync(t => t.Id == turmaEditada.Id);
 
-                if (turma != null) {
+                if (turma != null)
+                {
                     turma.Nome = turmaEditada.Nome;
                     _context.Update(turma);
                     await _context.SaveChangesAsync();
