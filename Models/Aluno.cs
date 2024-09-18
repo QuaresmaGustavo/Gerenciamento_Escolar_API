@@ -10,5 +10,8 @@ namespace API_APSNET.Models
 
         [JsonIgnore]
         public List<AlunoDisciplina> Disciplinas { get; set; }
+
+        [JsonIgnore]
+        public List<AlunoTarefa> Tarefas { get; set; }
     }
 }

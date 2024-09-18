@@ -25,10 +25,16 @@ namespace API_APSNET.Controllers
             return await _AlunoService.BuscarAlunoPorNome(nome);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("disciplinas")]
         public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> BuscarDisciplinasPorIDAluno(int alunoId)
         {
             return await _AlunoService.BuscarDisciplinaPeloAluno(alunoId);
+        }
+
+        [HttpGet("tarefas")]
+        public async Task<ActionResult<ResponseModel<List<Models.Tarefa>>>> BuscarTarefas(int alunoId)
+        {
+            return await _AlunoService.BuscarTarefas(alunoId);
         }
 
         [HttpPost("Cadastrar")]

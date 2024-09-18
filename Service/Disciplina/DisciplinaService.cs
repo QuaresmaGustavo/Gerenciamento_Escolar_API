@@ -60,16 +60,44 @@ namespace API_APSNET.Service.Disciplina
             ResponseModel<List<Models.Aluno>> resposta = new ResponseModel<List<Models.Aluno>>();
             try
             {
-                var disciplina = await _context.Disciplinas.Include(d => d.Alunos).ThenInclude(ad => ad.Aluno).FirstOrDefaultAsync();
+                var disciplina = await _context.Disciplinas
+                    .Include(d => d.Alunos)
+                    .ThenInclude(ad => ad.Aluno)
+                    .FirstOrDefaultAsync(d => d.Id == disciplinaID);
 
-                if(disciplina == null)
+                if (disciplina == null)
                 {
                     resposta.Mensagem = "Disciplina não encontrada";
                     return resposta;
                 }
 
                 var aluno = disciplina.Alunos.Select(ad => ad.Aluno).ToList();
+
                 resposta.Dados = aluno;
+                return resposta;
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                return resposta;
+            }
+        }
+
+        public async Task<ResponseModel<Models.Professor>> BuscarProfessorPelaDisciplina(int disciplinaID)
+        {
+            ResponseModel<Models.Professor> resposta = new ResponseModel<Models.Professor>();
+            try
+            {
+                var disciplina = await _context.Disciplinas.FirstOrDefaultAsync(d => d.Id == disciplinaID);
+
+                if (disciplina == null)
+                {
+                    resposta.Mensagem = "Disciplina não encontrada";
+                    return resposta;
+                }
+
+                var professor = _context.Professores.FirstOrDefault(p => p.IdDisciplina == disciplinaID);
+                resposta.Dados = professor;
                 return resposta;
             }
             catch (Exception ex)
@@ -138,7 +166,7 @@ namespace API_APSNET.Service.Disciplina
                 var novaDisciplina = new Models.Disciplina(){
                     Nome = disciplina.Nome,
                     Descricao = disciplina.Descricao,
-                    TurmaID = disciplina.TurmaID
+                    TurmaId = disciplina.TurmaId
                 };
                 _context.Add(novaDisciplina);
                 await _context.SaveChangesAsync();

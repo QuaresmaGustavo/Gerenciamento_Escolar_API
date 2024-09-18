@@ -2,6 +2,7 @@
 using API_APSNET.DTO;
 using API_APSNET.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace API_APSNET.Service.Professor
 {
@@ -86,7 +87,9 @@ namespace API_APSNET.Service.Professor
                 var novoProfessor = new Models.Professor(){
                     Nome = professor.Nome,
                     Idade = professor.Idade,
-                    IdDisciplina = professor.IdDisciplina
+                    Formacao = professor.Formacao,
+                    IdDisciplina = professor.IdDisciplina,
+                    Registro = DateTime.Now
                 };
                 _context.Add(novoProfessor);
                 await _context.SaveChangesAsync();
