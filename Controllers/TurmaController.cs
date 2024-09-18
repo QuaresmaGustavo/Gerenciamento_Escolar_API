@@ -18,7 +18,7 @@ namespace API_APSNET.Controllers
             return await _turmaService.BuscarTodasAsTurmas(paginacaoParametros);
         }
 
-        [HttpGet("{nome}")]
+        [HttpGet()]
         public async Task<ActionResult<ResponseModel<Turma>>> BuscarTurmasPorNome(string nome)
         {
             return await _turmaService.BuscarTurmasPorNome(nome);
@@ -36,7 +36,7 @@ namespace API_APSNET.Controllers
             return await _turmaService.AtualizarTurmas(turmaEditada);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete()]
         public async Task<ActionResult<ResponseModel<List<Turma>>>> DeletarTurma(int id)
         {
             return await _turmaService.DeletarTurma(id);

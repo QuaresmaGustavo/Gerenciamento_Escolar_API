@@ -22,7 +22,7 @@ namespace API_APSNET.Controllers
             return await _ProfessorService.BuscarTodasOsProfessores(paginaParametros);
         }
 
-        [HttpGet("{nome}")]
+        [HttpGet()]
         public async Task<ActionResult<ResponseModel<Models.Professor>>> BuscarProfessorPorNome(string nome)
         {
             return await _ProfessorService.BuscarProfessorPorNome(nome);
@@ -40,7 +40,7 @@ namespace API_APSNET.Controllers
             return await _ProfessorService.AtualizarProfessor(professorEditado);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete()]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> DeletarProfessor(int id)
         {
             return await _ProfessorService.DeletarProfessor(id);

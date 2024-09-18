@@ -12,6 +12,8 @@ namespace API_APSNET.Data
         public DbSet<Professor> Professores { get; set; }
         public DbSet<Aluno> Alunos { get; set; }
 
+        public DbSet<AlunoDisciplina> AlunoDisciplina { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AlunoDisciplina>()

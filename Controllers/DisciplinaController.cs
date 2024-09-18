@@ -22,16 +22,16 @@ namespace API_APSNET.Controllers
             return await _DisciplinaService.BuscarTodasAsDisciplinas(paginaParametros);
         }
 
-        [HttpGet("{nome}")]
+        [HttpGet()]
         public async Task<ActionResult<ResponseModel<Models.Disciplina>>> BuscarDisciplinaPorNome(string nome)
         {
             return await _DisciplinaService.BuscarDisciplinaPorNome(nome);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarAlunoPelaDisciplina(int disciplinaID)
+        [HttpGet("alunos")]
+        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarAlunoPelaDisciplina(int id)
         {
-            return await _DisciplinaService.BuscarAlunoPelaDisciplina(disciplinaID);
+            return await _DisciplinaService.BuscarAlunoPelaDisciplina(id);
         }
 
         [HttpPost("GerarDisciplina")]
@@ -46,7 +46,7 @@ namespace API_APSNET.Controllers
             return await _DisciplinaService.AtualizarDisciplina(disciplinaEditada);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete()]
         public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> DeletarDisciplina(int id)
         {
             return await _DisciplinaService.DeletarDisciplina(id);

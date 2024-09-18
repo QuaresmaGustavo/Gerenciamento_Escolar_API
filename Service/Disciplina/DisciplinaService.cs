@@ -60,7 +60,7 @@ namespace API_APSNET.Service.Disciplina
             ResponseModel<List<Models.Aluno>> resposta = new ResponseModel<List<Models.Aluno>>();
             try
             {
-                var disciplina = await _context.Disciplinas.Include(d => d.Alunos).ThenInclude(ad => ad.Aluno).FirstOrDefaultAsync();
+                var disciplina = await _context.Disciplinas.Include(d => d.Alunos).ThenInclude(ad => ad.Aluno).FirstOrDefaultAsync(d => d.Id == disciplinaID);
 
                 if(disciplina == null)
                 {

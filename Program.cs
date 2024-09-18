@@ -1,5 +1,6 @@
 using API_APSNET.Data;
 using API_APSNET.Service.Aluno;
+using API_APSNET.Service.AlunoDisciplina;
 using API_APSNET.Service.Disciplina;
 using API_APSNET.Service.Professor;
 using API_APSNET.Service.Turma;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<AlunoService>();
 builder.Services.AddScoped<DisciplinaService>();
 builder.Services.AddScoped<ProfessorService>();
 builder.Services.AddScoped<TurmaService>();
+builder.Services.AddScoped<AlunoDisciplinaService>();
 
 var app = builder.Build();
 

@@ -19,16 +19,16 @@ namespace API_APSNET.Controllers
             return await _AlunoService.BuscarTodasOsAlunos(paginaParametros);
         }
 
-        [HttpGet("{nome}")]
+        [HttpGet()]
         public async Task<ActionResult<ResponseModel<Models.Aluno>>> BuscarAlunoPorNome(string nome)
         {
             return await _AlunoService.BuscarAlunoPorNome(nome);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> BuscarDisciplinasPorIDAluno(int alunoId)
+        [HttpGet("disciplinas")]
+        public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> BuscarDisciplinasPorIDAluno(int id)
         {
-            return await _AlunoService.BuscarDisciplinaPeloAluno(alunoId);
+            return await _AlunoService.BuscarDisciplinaPeloAluno(id);
         }
 
         [HttpPost("Cadastrar")]
@@ -43,7 +43,7 @@ namespace API_APSNET.Controllers
             return await _AlunoService.AtualizarAluno(alunoEditado);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete()]
         public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> DeletarAluno(int id) {
             return await _AlunoService.DeletarAluno(id);
         }
