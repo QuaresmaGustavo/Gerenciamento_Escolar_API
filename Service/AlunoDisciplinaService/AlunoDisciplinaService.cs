@@ -22,14 +22,14 @@ namespace API_APSNET.Service.AlunoDisciplina
             {
                 var alunoDiscilpina = new Models.AlunoDisciplina()
                 {
-                    IdAluno = dados.AlunoId,
-                    IdDisciplina = dados.DisciplinaId
+                    IdAluno = dados.IdAluno,
+                    IdDisciplina = dados.IdDisciplina,
                 };
 
                 _Context.Add(alunoDiscilpina);
                 await _Context.SaveChangesAsync();
 
-                resposta.Dados = alunoDiscilpina;
+                resposta.Dados = await _Context.AlunoDisciplina.FirstOrDefaultAsync(ad => ad.IdAluno == dados.IdAluno && ad.IdDisciplina == dados.IdDisciplina);
                 return resposta;
             }
             catch (Exception ex)

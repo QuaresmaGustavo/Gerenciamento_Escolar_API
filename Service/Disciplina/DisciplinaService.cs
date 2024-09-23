@@ -60,21 +60,54 @@ namespace API_APSNET.Service.Disciplina
             ResponseModel<List<Models.Aluno>> resposta = new ResponseModel<List<Models.Aluno>>();
             try
             {
-                var disciplina = await _context.Disciplinas.Include(d => d.Alunos).ThenInclude(ad => ad.Aluno).FirstOrDefaultAsync();
+                
+                var disciplina = await _context.Disciplinas.Include(d => d.Alunos).ThenInclude(ad => ad.Aluno).FirstOrDefaultAsync(d => d.Id == disciplinaID); 
 
-                if(disciplina == null)
+                if (disciplina == null)
                 {
                     resposta.Mensagem = "Disciplina não encontrada";
                     return resposta;
                 }
 
-                var aluno = disciplina.Alunos.Select(ad => ad.Aluno).ToList();
-                resposta.Dados = aluno;
+                var alunos = disciplina.Alunos.Select(ad => ad.Aluno).ToList();
+
+                if (!alunos.Any())
+                {
+                    resposta.Mensagem = "Nenhum aluno associado a esta disciplina";
+                    return resposta;
+                }
+
+                resposta.Dados = alunos;
                 return resposta;
             }
             catch (Exception ex)
             {
                 resposta.Mensagem = ex.Message;
+                return resposta;
+            }
+        }
+
+        public async Task<ResponseModel<List<Models.Disciplina>>> BuscarTarefasDaDisciplina(int disciplinaId)
+        {
+            ResponseModel<List<Models.Disciplina>> resposta = new ResponseModel<List<Models.Disciplina>>();
+            try
+            {
+                var disciplina = await _context.Disciplinas.Include(d => d.Tarefas).ThenInclude(t => t.Disciplina).FirstOrDefaultAsync(d => d.Id == disciplinaId);
+
+                if (disciplina == null)
+                {
+                    resposta.Mensagem = "Disciplina Procurada não encontrada";
+                    return resposta;
+                }
+
+                var tarefas = disciplina.Tarefas.Select(t => t.Disciplina).ToList();
+                resposta.Dados = tarefas;
+                return resposta;
+
+            }
+            catch (Exception e)
+            {
+                resposta.Mensagem = e.Message;
                 return resposta;
             }
         }
@@ -138,7 +171,7 @@ namespace API_APSNET.Service.Disciplina
                 var novaDisciplina = new Models.Disciplina(){
                     Nome = disciplina.Nome,
                     Descricao = disciplina.Descricao,
-                    TurmaID = disciplina.TurmaID
+                    TurmaId = disciplina.TurmaId
                 };
                 _context.Add(novaDisciplina);
                 await _context.SaveChangesAsync();

@@ -1,7 +1,6 @@
 ﻿using API_APSNET.DTO;
 using API_APSNET.Models;
 using API_APSNET.Service.AlunoDisciplina;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_APSNET.Controllers
@@ -18,13 +17,13 @@ namespace API_APSNET.Controllers
         }
 
         [HttpPost("cadastrar")]
-        public async Task<ResponseModel<AlunoDisciplina>> CadastrarAlunoNaDisciplina(AlunoDisciplinaDTO aluno)
+        public async Task<ActionResult<ResponseModel<Models.AlunoDisciplina>>> CadastrarAlunoNaDisciplina(AlunoDisciplinaDTO aluno)
         {
             return await _service.CadastrarAlunoNaDisciplina(aluno);
         }
 
         [HttpDelete]
-        public async Task<ResponseModel<AlunoDisciplina>> RemoverAlunoDaDisciplina(int alunoId, int disciplinaId)
+        public async Task<ActionResult<ResponseModel<Models.AlunoDisciplina>>> RemoverAlunoDaDisciplina(int alunoId, int disciplinaId)
         {
             return await _service.RemoverAlunoDaDisciplina(alunoId, disciplinaId);
         }

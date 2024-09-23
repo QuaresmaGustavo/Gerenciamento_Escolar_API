@@ -2,7 +2,7 @@
 {
     public class AlunoDisciplinaDTO
     {
-        public int AlunoId;
-        public int DisciplinaId;
+        public int IdAluno { get; set; }
+        public int IdDisciplina { get; set; }
     }
 }

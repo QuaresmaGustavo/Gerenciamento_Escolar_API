@@ -3,6 +3,7 @@ using API_APSNET.Service.Aluno;
 using API_APSNET.Service.AlunoDisciplina;
 using API_APSNET.Service.Disciplina;
 using API_APSNET.Service.Professor;
+using API_APSNET.Service.Tarefa;
 using API_APSNET.Service.Turma;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,7 @@ builder.Services.AddScoped<DisciplinaService>();
 builder.Services.AddScoped<ProfessorService>();
 builder.Services.AddScoped<TurmaService>();
 builder.Services.AddScoped<AlunoDisciplinaService>();
+builder.Services.AddScoped<TarefaService>();
 
 
 var app = builder.Build();
