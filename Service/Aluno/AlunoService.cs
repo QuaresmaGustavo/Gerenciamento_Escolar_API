@@ -16,18 +16,15 @@ namespace API_APSNET.Service.Aluno
             {
                 var professor = await _context.Alunos.FirstOrDefaultAsync(a => a.Id == alunoEditado.Id);
 
-                if (professor != null)
-                {
-                    professor.Nome = alunoEditado.Nome;
-                    professor.Idade = alunoEditado.Idade;
-                    _context.Update(professor);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    resposta.Mensagem = "Turma Não encontrada!";
+                if (professor != null){
+                    if(professor.Nome != null){ professor.Nome = alunoEditado.Nome; }
+                    if(professor.Idade != null){ professor.Idade = alunoEditado.Idade.Value; }
+                }else{
+                    resposta.Mensagem = "Turma não encontrada!";
+                    return resposta;
                 }
 
+                await _context.SaveChangesAsync();
                 resposta.Dados = await _context.Alunos.ToListAsync();
                 return resposta;
             }
@@ -103,16 +100,14 @@ namespace API_APSNET.Service.Aluno
             try
             {
                 var verificarAluno = await BuscarAlunoPorNome(aluno.Nome);
-                if (verificarAluno.Dados != null && verificarAluno.Dados.Nome.Equals(aluno.Nome))
-                {
+                if (verificarAluno.Dados != null && verificarAluno.Dados.Nome.Equals(aluno.Nome)){
                     resposta.Mensagem = "Esta aluno ja existe!";
                     return resposta;
                 }
 
-                var novoAluno = new Models.Aluno()
-                {
+                var novoAluno = new Models.Aluno(){
                     Nome = aluno.Nome,
-                    Idade = aluno.Idade
+                    Idade = aluno.Idade.Value,
                 };
                 _context.Add(novoAluno);
                 await _context.SaveChangesAsync();
@@ -134,18 +129,15 @@ namespace API_APSNET.Service.Aluno
             {
                 var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.Id == id);
 
-                if (aluno != null)
-                {
+                if (aluno != null){
                     _context.Alunos.Remove(aluno);
                     await _context.SaveChangesAsync();
-                }
-                else
-                {
+                }else{
                     resposta.Mensagem = "Turma não encontrada!";
+                    return resposta;
                 }
 
                 resposta.Dados = await _context.Alunos.ToListAsync();
-
                 return resposta;
             }
             catch (Exception ex)

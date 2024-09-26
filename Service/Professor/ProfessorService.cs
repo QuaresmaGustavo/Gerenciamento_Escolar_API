@@ -17,23 +17,22 @@ namespace API_APSNET.Service.Professor
             {
                 var professor = await _context.Professores.FirstOrDefaultAsync(p => p.Id == professorEditado.Id);
 
-                if (professor != null)
-                {
-                    professor.Nome = professorEditado.Nome;
-                    professor.Idade = professorEditado.Idade;
-                    _context.Update(professor);
-                    await _context.SaveChangesAsync();
+                if (professor != null){
+                    if (professor.Nome != null){ professor.Nome = professorEditado.Nome;}
+                    if (professor.Idade != null) { professor.Idade = professorEditado.Idade.Value; }
+                    if (professor.Formacao != null) { professor.Formacao = professorEditado.Formacao; }
+                    if (professor.IdDisciplina != null) { professor.IdDisciplina = professorEditado.IdDisciplina; }
                 }
-                else
-                {
+                else{
                     resposta.Mensagem = "Turma Não encontrada!";
+                    return resposta;
                 }
 
+                await _context.SaveChangesAsync();
                 resposta.Dados = await _context.Professores.ToListAsync();
                 return resposta;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex){
                 resposta.Mensagem = ex.Message;
                 return resposta;
             }
@@ -85,7 +84,7 @@ namespace API_APSNET.Service.Professor
 
                 var novoProfessor = new Models.Professor(){
                     Nome = professor.Nome,
-                    Idade = professor.Idade,
+                    Idade = professor.Idade.Value,
                     IdDisciplina = professor.IdDisciplina
                 };
                 _context.Add(novoProfessor);
@@ -116,6 +115,7 @@ namespace API_APSNET.Service.Professor
                 else
                 {
                     resposta.Mensagem = "Turma não encontrada!";
+                    return resposta;
                 }
 
                 resposta.Dados = await _context.Professores.ToListAsync();

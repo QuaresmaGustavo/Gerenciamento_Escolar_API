@@ -14,32 +14,27 @@ namespace API_APSNET.Controllers
         public AlunosController(AlunoService alunoInterface){ _AlunoService = alunoInterface;}
 
         [HttpGet("todos")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarTodasOsAlunos([FromQuery] Paginacao paginaParametros)
-        {
+        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarTodasOsAlunos([FromQuery] Paginacao paginaParametros){
             return await _AlunoService.BuscarTodasOsAlunos(paginaParametros);
         }
 
         [HttpGet()]
-        public async Task<ActionResult<ResponseModel<Models.Aluno>>> BuscarAlunoPorNome(string nome)
-        {
+        public async Task<ActionResult<ResponseModel<Models.Aluno>>> BuscarAlunoPorNome(string nome){
             return await _AlunoService.BuscarAlunoPorNome(nome);
         }
 
         [HttpGet("disciplina")]
-        public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> BuscarDisciplinasPorIDAluno(int alunoId)
-        {
+        public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> BuscarDisciplinasPorIDAluno(int alunoId){
             return await _AlunoService.BuscarDisciplinaPeloAluno(alunoId);
         }
 
         [HttpPost("Cadastrar")]
-        public async Task<ActionResult<ResponseModel<Models.Aluno>>> CadastrarAluno(AlunoDTO aluno)
-        {
+        public async Task<ActionResult<ResponseModel<Models.Aluno>>> CadastrarAluno(AlunoDTO aluno){
             return await _AlunoService.CadastrarAluno(aluno);
         }
 
-        [HttpPut("Atualizar")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> AtualizarAluno(AlunoDTO alunoEditado)
-        {
+        [HttpPatch("Atualizar")]
+        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> AtualizarAluno(AlunoDTO alunoEditado){
             return await _AlunoService.AtualizarAluno(alunoEditado);
         }
 

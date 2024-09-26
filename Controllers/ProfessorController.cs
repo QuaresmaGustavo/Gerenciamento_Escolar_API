@@ -29,13 +29,13 @@ namespace API_APSNET.Controllers
         }
 
         [HttpPost("Cadastrar")]
-        public async Task<ActionResult<ResponseModel<Models.Professor>>> CadastrarProfessor(ProfessorDTO professor)
+        public async Task<ActionResult<ResponseModel<Models.Professor>>> CadastrarProfessor([FromBody] ProfessorDTO professor)
         {
             return await _ProfessorService.CadastrarProfessor(professor);
         }
 
-        [HttpPut("Atualizar")]
-        public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> AtualizarProfessor(ProfessorDTO professorEditado)
+        [HttpPatch("atualizar")]
+        public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> AtualizarProfessor([FromBody] ProfessorDTO professorEditado)
         {
             return await _ProfessorService.AtualizarProfessor(professorEditado);
         }
