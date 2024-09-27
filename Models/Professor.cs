@@ -9,7 +9,7 @@ namespace API_APSNET.Models
         public string Formacao { get; set; }
         public int Idade { get; set; }
         public DateOnly Registro { get; set; }
-        public int IdDisciplina { get; set; }
+        public int DisciplinaId { get; set; }
         [JsonIgnore]
         public Disciplina Disciplina { get; set; }
     }

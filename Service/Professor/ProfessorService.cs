@@ -21,7 +21,7 @@ namespace API_APSNET.Service.Professor
                     if (professor.Nome != null){ professor.Nome = professorEditado.Nome;}
                     if (professor.Idade != null) { professor.Idade = professorEditado.Idade.Value; }
                     if (professor.Formacao != null) { professor.Formacao = professorEditado.Formacao; }
-                    if (professor.IdDisciplina != null) { professor.IdDisciplina = professorEditado.IdDisciplina; }
+                    if (professor.DisciplinaId != null) { professor.DisciplinaId = professorEditado.IdDisciplina; }
                 }
                 else{
                     resposta.Mensagem = "Turma Não encontrada!";
@@ -82,10 +82,12 @@ namespace API_APSNET.Service.Professor
                     return resposta;
                 }
 
-                var novoProfessor = new Models.Professor(){
+                var novoProfessor = new Models.Professor()
+                {
                     Nome = professor.Nome,
                     Idade = professor.Idade.Value,
-                    IdDisciplina = professor.IdDisciplina
+                    DisciplinaId = professor.IdDisciplina,
+                    Formacao = professor.Formacao
                 };
                 _context.Add(novoProfessor);
                 await _context.SaveChangesAsync();

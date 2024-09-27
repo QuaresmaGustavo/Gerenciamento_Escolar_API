@@ -18,12 +18,12 @@ namespace API_APSNET.Controllers
         [HttpGet]
         public async Task<ActionResult<ResponseModel<List<Tarefa>>>> CadastrarTarefasNaDisciplina(int disciplinaId)
         {
-            return await _service.BuscarTarefasPelaDisciplina(disciplinaId);
+            return await _service.BuscarTarefasDaDisciplina(disciplinaId);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseModel<Tarefa>>> CadastrarTarefasNaDisciplina([FromBody] TarefaDTO dados){
-            return await _service.CadastrarTarefasNaDisciplina(dados);
+        public async Task<ActionResult<ResponseModel<Tarefa>>> CadastrarTarefasNaDisciplina([FromBody] TarefaDTO dados, int disciplinaId){
+            return await _service.CadastrarTarefasNaDisciplina(dados, disciplinaId);
         }
 
         [HttpPatch("{id}")]
@@ -31,9 +31,9 @@ namespace API_APSNET.Controllers
             return await _service.AtualizarTarefa(id, dados);
         }
 
-        [HttpDelete("{alunoId}/{disciplinaId}")]
-        public async Task<ActionResult<ResponseModel<Tarefa>>> RemoverTarefa(int alunoId, int disciplinaId){
-            return await _service.RemoverTarefa(alunoId, disciplinaId);
+        [HttpDelete()]
+        public async Task<ActionResult<ResponseModel<Tarefa>>> RemoverTarefa(int id){
+            return await _service.RemoverTarefa(id);
         }
     }
 }

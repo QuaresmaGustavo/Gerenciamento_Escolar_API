@@ -8,6 +8,5 @@
         public string? Descricao { get; set; }
         public int? Pontuacao { get; set; }
         public int? PontuacaoMax { get; set; }
-        public int? DisciplinaId { get; set; }
     }
 }

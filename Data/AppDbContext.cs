@@ -13,6 +13,7 @@ namespace API_APSNET.Data
         public DbSet<Aluno> Alunos { get; set; }
         public DbSet<AlunoDisciplina> AlunoDisciplina { get; set; }
         public DbSet<Tarefa> Tarefas { get; set; }
+        public DbSet<AlunoTarefaDisciplina> AlunoTarefaDisciplinas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,25 @@ namespace API_APSNET.Data
                         .HasOne(ad => ad.Disciplina)
                         .WithMany(d => d.Alunos)
                         .HasForeignKey(ad => ad.IdDisciplina);
+
+            //ManyToMany - Aluno/Tarefa/Disciplina
+            modelBuilder.Entity<AlunoTarefaDisciplina>()
+                .HasKey(atd => new { atd.AlunoId, atd.TarefaId, atd.DisciplinaId });
+
+            modelBuilder.Entity<AlunoTarefaDisciplina>()
+                        .HasOne(atd => atd.Aluno)
+                        .WithMany(a => a.Tarefas)
+                        .HasForeignKey(atd => atd.AlunoId);
+
+            modelBuilder.Entity<AlunoTarefaDisciplina>()
+                        .HasOne(atd => atd.Tarefa)
+                        .WithMany(t => t.AlunoTarefaDisciplinas)
+                        .HasForeignKey(atd => atd.TarefaId);
+
+            modelBuilder.Entity<AlunoTarefaDisciplina>()
+                        .HasOne(atd => atd.Disciplina)
+                        .WithMany(d => d.Tarefas)
+                        .HasForeignKey(atd => atd.DisciplinaId);
         }
     }
 }

@@ -12,31 +12,32 @@ namespace API_APSNET.Service.Tarefa
         private readonly AppDbContext _Context;
         private readonly DisciplinaService disciplinaService;
 
-        public TarefaService(AppDbContext context, DisciplinaService disciplinaService)
-        {
+        public TarefaService(AppDbContext context, DisciplinaService disciplinaService){
             _Context = context;
             this.disciplinaService = disciplinaService;
         }
 
-        public async Task<ActionResult<ResponseModel<List<Models.Tarefa>>>> BuscarTarefasPelaDisciplina(int disciplinaId)
+        public async Task<ResponseModel<List<Models.Tarefa>>> BuscarTarefasDaDisciplina(int disciplinaId)
         {
             ResponseModel<List<Models.Tarefa>> resposta = new ResponseModel<List<Models.Tarefa>>();
             try
             {
-                var disciplina = await _Context.Disciplinas
-                                               .Include(d => d.Tarefas)
-                                               .FirstOrDefaultAsync(d => d.Id == disciplinaId);
+                var disciplina = await _Context.Disciplinas.FirstOrDefaultAsync(d => d.Id == disciplinaId);
 
-                if (disciplina == null)
-                {
-                    resposta.Mensagem = "Disciplina não encontrada";
+                if (disciplina == null) {
+                    resposta.Mensagem = "Disciplina Procurada não encontrada";
                     return resposta;
                 }
 
-                var tarefas = disciplina.Tarefas.ToList();
+                var tarefas = await _Context.AlunoTarefaDisciplinas.Where(atd => atd.DisciplinaId == disciplinaId).Select(atd => atd.Tarefa).Distinct().ToListAsync();
+
+                if (tarefas == null){
+                    resposta.Mensagem = "Nenhuma tarefa encontrada para esta disciplina";
+                    return resposta;
+                }
+
                 resposta.Dados = tarefas;
                 return resposta;
-
             }
             catch (Exception e)
             {
@@ -45,37 +46,28 @@ namespace API_APSNET.Service.Tarefa
             }
         }
 
-        public async Task<ResponseModel<Models.Tarefa>> CadastrarTarefasNaDisciplina(TarefaDTO dados){
+        public async Task<ResponseModel<Models.Tarefa>> CadastrarTarefasNaDisciplina(TarefaDTO dados, int disciplinaId){
             ResponseModel<Models.Tarefa> resposta = new ResponseModel<Models.Tarefa>();
             try {
-                var disciplina = await _Context.Disciplinas.FirstOrDefaultAsync(d => d.Id == dados.DisciplinaId);
-
-                if (disciplina == null) {
-                    resposta.Mensagem = "Disciplina Procurada não encontrada";
+                if (dados.Pontuacao > dados.PontuacaoMax){
+                    resposta.Mensagem = "A pontuação da tarefa não pode ser maior que a pontuação maxima da tarefa";
                     return resposta;
                 }
 
-                var aluno = await disciplinaService.BuscarAlunoPelaDisciplina(dados.DisciplinaId.Value);
-
-                if (aluno.Dados == null || !aluno.Dados.Any()){
-                    resposta.Mensagem = "Não foram encontrado alunos cadastrados nesta disciplina";
+                if (dados.PontuacaoMax > 100){
+                    resposta.Mensagem = "A pontuação maxima não pode ser maior que 100";
                     return resposta;
                 }
 
-                foreach (var a in aluno.Dados){
-                    var novaTarefa = new Models.Tarefa(){
-                        Nome = dados.Nome,
-                        Tipo = dados.Tipo,
-                        Descricao = dados.Descricao,
-                        Pontuacao = dados.Pontuacao.Value,
-                        PontuacaoMax = dados.PontuacaoMax.Value,
-                        DisciplinaId = dados.DisciplinaId.Value,
-                        AlunoId = a.Id
-                    };
+                var novaTarefa = new Models.Tarefa(){
+                    Nome = dados.Nome,
+                    Tipo = dados.Tipo,
+                    Descricao = dados.Descricao,
+                    Pontuacao = dados.Pontuacao.Value,
+                    PontuacaoMax = dados.PontuacaoMax.Value
+                };
 
-                    _Context.Add(novaTarefa);
-                }
-
+                _Context.Add(novaTarefa);
                 await _Context.SaveChangesAsync();
 
                 resposta.Mensagem = "Tarefa cadastrada com sucesso";
@@ -114,16 +106,14 @@ namespace API_APSNET.Service.Tarefa
             }
         }
 
-        public async Task<ResponseModel<Models.Tarefa>> RemoverTarefa(int alunoId, int disciplinaId)
+        public async Task<ResponseModel<Models.Tarefa>> RemoverTarefa(int id)
         {
             ResponseModel<Models.Tarefa> resposta = new ResponseModel<Models.Tarefa>();
 
-            try
-            {
-                var tarefa = await _Context.Tarefas.FirstOrDefaultAsync(t => t.AlunoId == alunoId && t.DisciplinaId == disciplinaId);
+            try{
+                var tarefa = await _Context.Tarefas.FirstOrDefaultAsync(t => t.Id == id);
 
-                if (tarefa == null)
-                {
+                if (tarefa == null){
                     resposta.Mensagem = "Tarefa não encontrado";
                     return resposta;
                 }
@@ -134,8 +124,7 @@ namespace API_APSNET.Service.Tarefa
                 resposta.Mensagem = "Tarefa removido com sucesso!";
                 return resposta;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex){
                 resposta.Mensagem = ex.Message;
                 return resposta;
             }

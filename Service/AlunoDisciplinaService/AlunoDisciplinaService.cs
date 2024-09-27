@@ -9,8 +9,7 @@ namespace API_APSNET.Service.AlunoDisciplina
     {
         private readonly AppDbContext _Context;
 
-        public AlunoDisciplinaService(AppDbContext context)
-        {
+        public AlunoDisciplinaService(AppDbContext context){
             _Context = context;
         }
 

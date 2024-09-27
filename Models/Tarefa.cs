@@ -10,11 +10,7 @@ namespace API_APSNET.Models
         public string Descricao { get; set; }
         public int Pontuacao { get; set; }
         public int PontuacaoMax { get; set; }
-        public int DisciplinaId { get; set; }
         [JsonIgnore]
-        public Disciplina Disciplina { get; set; }
-        public int AlunoId { get; set; }
-        [JsonIgnore]
-        public Aluno Aluno { get; set; }
+        public List<AlunoTarefaDisciplina> AlunoTarefaDisciplinas { get; set; }
     }
 }

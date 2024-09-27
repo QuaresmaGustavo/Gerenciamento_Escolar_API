@@ -12,6 +12,6 @@ namespace API_APSNET.Models
         public List<AlunoDisciplina> Disciplinas { get; set; }
 
         [JsonIgnore]
-        public List<Tarefa> Tarefas { get; set; }
+        public List<AlunoTarefaDisciplina> Tarefas { get; set; }
     }
 }
