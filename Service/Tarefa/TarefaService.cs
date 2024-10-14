@@ -49,13 +49,16 @@ namespace API_APSNET.Service.Tarefa
         public async Task<ResponseModel<Models.Tarefa>> CadastrarTarefasNaDisciplina(TarefaDTO dados, int disciplinaId){
             ResponseModel<Models.Tarefa> resposta = new ResponseModel<Models.Tarefa>();
             try {
-                if (dados.Pontuacao > dados.PontuacaoMax){
-                    resposta.Mensagem = "A pontuação da tarefa não pode ser maior que a pontuação maxima da tarefa";
-                    return resposta;
+                int pontuacaoMax = 0;
+
+                var tarefas = await _Context.AlunoTarefaDisciplinas.Where(atd => atd.DisciplinaId == disciplinaId).Select(atd => atd.Tarefa).Distinct().ToListAsync();
+
+                foreach (var t in tarefas){
+                    pontuacaoMax += t.PontuacaoMax;
                 }
 
-                if (dados.PontuacaoMax > 100){
-                    resposta.Mensagem = "A pontuação maxima não pode ser maior que 100";
+                if (dados.PontuacaoMax + pontuacaoMax > 100){
+                    resposta.Mensagem = "O somatorio das pontuações não pode ser maior que 100 pontos";
                     return resposta;
                 }
 

@@ -24,7 +24,7 @@ namespace API_APSNET.Service.Professor
                     if (professor.DisciplinaId != null) { professor.DisciplinaId = professorEditado.IdDisciplina; }
                 }
                 else{
-                    resposta.Mensagem = "Turma Não encontrada!";
+                    resposta.Mensagem = "Professor não encontrado!";
                     return resposta;
                 }
 
@@ -87,7 +87,8 @@ namespace API_APSNET.Service.Professor
                     Nome = professor.Nome,
                     Idade = professor.Idade.Value,
                     DisciplinaId = professor.IdDisciplina,
-                    Formacao = professor.Formacao
+                    Formacao = professor.Formacao,
+                    Registro = DateOnly.FromDateTime(DateTime.Now)
                 };
                 _context.Add(novoProfessor);
                 await _context.SaveChangesAsync();
