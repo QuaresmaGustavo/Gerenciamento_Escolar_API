@@ -20,6 +20,11 @@ namespace API_APSNET.Controllers
             return await _service.AdicionarRelacaoAlunoTarefaDisciplina(dados);
         }
 
+        [HttpPut]
+        public async Task<ResponseModel<Models.AlunoTarefaDisciplina>> AtualizarNotaTarefa(int idAluno, int idTarefa, AlunoTarefaDisciplinaDTO dados){
+            return await _service.AtualizarNotaTarefa(idAluno, idTarefa, dados);
+        }
+
         [HttpDelete]
         public async Task<ResponseModel<Models.AlunoTarefaDisciplina>> RemoverTarefaDaDiscipina(int tarefaId, int disciplinaId){
             return await _service.RemoverTarefaDaDiscipina(tarefaId, disciplinaId);

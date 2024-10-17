@@ -4,8 +4,10 @@ using System.Text.Json.Serialization;
 namespace API_APSNET.DTO
 {
     public class AlunoTarefaDisciplinaDTO{
-        public int TarefaId { get; set; }
+        public int? TarefaId { get; set; }
 
-        public int DisciplinaId { get; set; }
+        public int? DisciplinaId { get; set; }
+
+        public int? Pontuacao { get; set; }
     }
 }

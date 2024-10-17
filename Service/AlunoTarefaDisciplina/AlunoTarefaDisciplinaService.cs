@@ -2,6 +2,7 @@
 using API_APSNET.DTO;
 using API_APSNET.Models;
 using API_APSNET.Service.Disciplina;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API_APSNET.Service.AlunoTarefaDisciplina
@@ -24,14 +25,15 @@ namespace API_APSNET.Service.AlunoTarefaDisciplina
                 var disciplina = await _context.Disciplinas.FirstOrDefaultAsync(d => d.Id == dados.DisciplinaId);
                 if (disciplina == null) { resposta.Mensagem = "Disciplina não encontrada!"; return resposta; }
 
-                var alunos = await disciplinaService.BuscarAlunoPelaDisciplina(dados.DisciplinaId);
+                var alunos = await disciplinaService.BuscarAlunoPelaDisciplina(dados.DisciplinaId.Value);
                 if (alunos == null) { resposta.Mensagem = "Alunos não encontrados!"; return resposta; }
 
                 foreach (var aluno in alunos.Dados){
                     var relacao = new Models.AlunoTarefaDisciplina(){
-                        TarefaId = dados.TarefaId,
-                        DisciplinaId = dados.DisciplinaId,
-                        AlunoId = aluno.Id
+                        TarefaId = dados.TarefaId.Value,
+                        DisciplinaId = dados.DisciplinaId.Value,
+                        AlunoId = aluno.Id,
+                        Pontuacao = 0
                     };
 
                     _context.Add(relacao);
@@ -42,7 +44,39 @@ namespace API_APSNET.Service.AlunoTarefaDisciplina
                 return resposta;
             }
             catch (Exception ex){
-                resposta.Mensagem = ex.InnerException.Message;
+                resposta.Mensagem = ex.Message;
+                return resposta;
+            }
+        }
+
+        public async Task<ResponseModel<Models.AlunoTarefaDisciplina>> AtualizarNotaTarefa(int idAluno, int idTarefa, AlunoTarefaDisciplinaDTO dados)
+        {
+            ResponseModel<Models.AlunoTarefaDisciplina> resposta = new ResponseModel<Models.AlunoTarefaDisciplina>();
+            try
+            {
+                var tarefa = _context.Tarefas.FirstOrDefault(t => t.Id == idTarefa);
+                var aluno = _context.AlunoTarefaDisciplinas.FirstOrDefault(t => t.AlunoId == idAluno && t.TarefaId == idTarefa);
+
+                if (tarefa == null || aluno == null){
+                    resposta.Mensagem = "Erro ao alterar nota!";
+                    return resposta;
+                }
+
+                if (dados.Pontuacao != null && dados.Pontuacao <= tarefa.PontuacaoMax) {
+                    aluno.Pontuacao = dados.Pontuacao.Value;
+                }else {
+                    resposta.Mensagem = "Nota do aluno não pode ser maior que a nota maxima da atividade";
+                    return resposta;
+                }
+
+                await _context.SaveChangesAsync();
+                resposta.Mensagem = "nota atualizado";
+                return resposta;
+
+            }
+            catch (Exception e)
+            {
+                resposta.Mensagem = e.Message;
                 return resposta;
             }
         }

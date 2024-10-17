@@ -14,5 +14,7 @@ namespace API_APSNET.Models
         public int AlunoId { get; set; }
         [JsonIgnore]
         public Aluno Aluno { get; set; }
+
+        public int Pontuacao { get; set; }
     }
 }

@@ -66,7 +66,6 @@ namespace API_APSNET.Service.Tarefa
                     Nome = dados.Nome,
                     Tipo = dados.Tipo,
                     Descricao = dados.Descricao,
-                    Pontuacao = dados.Pontuacao.Value,
                     PontuacaoMax = dados.PontuacaoMax.Value
                 };
 
@@ -93,7 +92,6 @@ namespace API_APSNET.Service.Tarefa
                     return resposta;
                 }
 
-                if (dados.Pontuacao != null) {tarefa.Pontuacao = dados.Pontuacao.Value;}
                 if (dados.Nome != null) { tarefa.Nome = dados.Nome; }
                 if (dados.Tipo != null) { tarefa.Tipo = dados.Tipo; }
                 if (dados.Descricao != null) { tarefa.Descricao = dados.Descricao; }
