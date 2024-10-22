@@ -14,6 +14,7 @@ namespace API_APSNET.Data
         public DbSet<AlunoDisciplina> AlunoDisciplina { get; set; }
         public DbSet<Tarefa> Tarefas { get; set; }
         public DbSet<AlunoTarefaDisciplina> AlunoTarefaDisciplinas { get; set; }
+        public DbSet<Arquivo> Arquivos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

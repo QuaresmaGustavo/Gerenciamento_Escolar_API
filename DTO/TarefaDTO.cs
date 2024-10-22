@@ -1,4 +1,6 @@
-﻿namespace API_APSNET.DTO
+﻿using API_APSNET.Models;
+
+namespace API_APSNET.DTO
 {
     public class TarefaDTO
     {
