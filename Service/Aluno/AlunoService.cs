@@ -1,7 +1,10 @@
 ﻿using API_APSNET.Data;
 using API_APSNET.DTO;
-using API_APSNET.Models;
+using API_APSNET.Enum;
+using API_APSNET.Models.Configuracao;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace API_APSNET.Service.Aluno
 {
@@ -18,7 +21,7 @@ namespace API_APSNET.Service.Aluno
 
                 if (professor != null){
                     if(professor.Nome != null){ professor.Nome = alunoEditado.Nome; }
-                    if(professor.Idade != null){ professor.Idade = alunoEditado.Idade.Value; }
+                    if(professor.Idade != null){ professor.Idade = alunoEditado.Idade; }
                 }else{
                     resposta.Mensagem = "Turma não encontrada!";
                     return resposta;
@@ -105,9 +108,15 @@ namespace API_APSNET.Service.Aluno
                     return resposta;
                 }
 
+                var hmac = new HMACSHA512();
+
                 var novoAluno = new Models.Aluno(){
                     Nome = aluno.Nome,
-                    Idade = aluno.Idade.Value,
+                    Idade = aluno.Idade,
+                    Registro = DateOnly.FromDateTime(DateTime.Now),
+                    Login = aluno.Login,
+                    Senha = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(aluno.Senha))),
+                    Cargo = (Cargo)aluno.Cargo,
                 };
                 _context.Add(novoAluno);
                 await _context.SaveChangesAsync();

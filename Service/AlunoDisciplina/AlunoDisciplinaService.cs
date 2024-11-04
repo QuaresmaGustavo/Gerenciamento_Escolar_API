@@ -1,6 +1,6 @@
 ﻿using API_APSNET.Data;
 using API_APSNET.DTO;
-using API_APSNET.Models;
+using API_APSNET.Models.Configuracao;
 using Microsoft.EntityFrameworkCore;
 
 namespace API_APSNET.Service.AlunoDisciplina

@@ -1,5 +1,5 @@
 ﻿using API_APSNET.DTO;
-using API_APSNET.Models;
+using API_APSNET.Models.Configuracao;
 using API_APSNET.Service.AlunoDisciplina;
 using Microsoft.AspNetCore.Mvc;
 

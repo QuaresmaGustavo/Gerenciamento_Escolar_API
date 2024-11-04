@@ -1,5 +1,4 @@
-﻿
-namespace API_APSNET.Models
+﻿namespace API_APSNET.Models.Configuracao
 {
     public class ResponseModel<T>
     {

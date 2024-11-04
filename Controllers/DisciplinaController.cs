@@ -1,5 +1,5 @@
 ﻿using API_APSNET.DTO;
-using API_APSNET.Models;
+using API_APSNET.Models.Configuracao;
 using API_APSNET.Service.Disciplina;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +29,7 @@ namespace API_APSNET.Controllers
         }
 
         [HttpGet("aluno")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarAlunoPelaDisciplina(int disciplinaID)
+        public async Task<ActionResult<ResponseModel<List<Models.Administrador>>>> BuscarAlunoPelaDisciplina(int disciplinaID)
         {
             return await _DisciplinaService.BuscarAlunoPelaDisciplina(disciplinaID);
         }

@@ -1,6 +1,6 @@
 ﻿using API_APSNET.Data;
 using API_APSNET.DTO;
-using API_APSNET.Models;
+using API_APSNET.Models.Configuracao;
 using Microsoft.EntityFrameworkCore;
 
 namespace API_APSNET.Service.Disciplina
@@ -55,9 +55,9 @@ namespace API_APSNET.Service.Disciplina
             }
         }
 
-        public async Task<ResponseModel<List<Models.Aluno>>> BuscarAlunoPelaDisciplina(int disciplinaID)
+        public async Task<ResponseModel<List<Models.Administrador>>> BuscarAlunoPelaDisciplina(int disciplinaID)
         {
-            ResponseModel<List<Models.Aluno>> resposta = new ResponseModel<List<Models.Aluno>>();
+            ResponseModel<List<Models.Administrador>> resposta = new ResponseModel<List<Models.Administrador>>();
             try
             {
                 

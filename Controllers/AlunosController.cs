@@ -1,5 +1,5 @@
 ﻿using API_APSNET.DTO;
-using API_APSNET.Models;
+using API_APSNET.Models.Configuracao;
 using API_APSNET.Service.Aluno;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +14,12 @@ namespace API_APSNET.Controllers
         public AlunosController(AlunoService alunoInterface){ _AlunoService = alunoInterface;}
 
         [HttpGet("todos")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarTodasOsAlunos([FromQuery] Paginacao paginaParametros){
+        public async Task<ActionResult<ResponseModel<List<Models.Administrador>>>> BuscarTodasOsAlunos([FromQuery] Paginacao paginaParametros){
             return await _AlunoService.BuscarTodasOsAlunos(paginaParametros);
         }
 
         [HttpGet()]
-        public async Task<ActionResult<ResponseModel<Models.Aluno>>> BuscarAlunoPorNome(string nome){
+        public async Task<ActionResult<ResponseModel<Models.Administrador>>> BuscarAlunoPorNome(string nome){
             return await _AlunoService.BuscarAlunoPorNome(nome);
         }
 
@@ -29,17 +29,17 @@ namespace API_APSNET.Controllers
         }
 
         [HttpPost("Cadastrar")]
-        public async Task<ActionResult<ResponseModel<Models.Aluno>>> CadastrarAluno(AlunoDTO aluno){
+        public async Task<ActionResult<ResponseModel<Models.Administrador>>> CadastrarAluno(AlunoDTO aluno){
             return await _AlunoService.CadastrarAluno(aluno);
         }
 
         [HttpPatch("Atualizar")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> AtualizarAluno(AlunoDTO alunoEditado){
+        public async Task<ActionResult<ResponseModel<List<Models.Administrador>>>> AtualizarAluno(AlunoDTO alunoEditado){
             return await _AlunoService.AtualizarAluno(alunoEditado);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> DeletarAluno(int id) {
+        public async Task<ActionResult<ResponseModel<List<Models.Administrador>>>> DeletarAluno(int id) {
             return await _AlunoService.DeletarAluno(id);
         }
     }

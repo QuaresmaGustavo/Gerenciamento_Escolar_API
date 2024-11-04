@@ -39,7 +39,7 @@ namespace API_APSNET.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Alunos");
+                    b.ToTable("Alunos", (string)null);
                 });
 
             modelBuilder.Entity("API_APSNET.Models.AlunoDisciplina", b =>
@@ -54,7 +54,7 @@ namespace API_APSNET.Migrations
 
                     b.HasIndex("IdDisciplina");
 
-                    b.ToTable("AlunoDisciplina");
+                    b.ToTable("AlunoDisciplina", (string)null);
                 });
 
             modelBuilder.Entity("API_APSNET.Models.AlunoTarefaDisciplina", b =>
@@ -77,7 +77,7 @@ namespace API_APSNET.Migrations
 
                     b.HasIndex("TarefaId");
 
-                    b.ToTable("AlunoTarefaDisciplinas");
+                    b.ToTable("AlunoTarefaDisciplinas", (string)null);
                 });
 
             modelBuilder.Entity("API_APSNET.Models.Arquivo", b =>
@@ -108,7 +108,7 @@ namespace API_APSNET.Migrations
                     b.HasIndex("TarefaId")
                         .IsUnique();
 
-                    b.ToTable("Arquivos");
+                    b.ToTable("Arquivos", (string)null);
                 });
 
             modelBuilder.Entity("API_APSNET.Models.Disciplina", b =>
@@ -134,7 +134,7 @@ namespace API_APSNET.Migrations
 
                     b.HasIndex("TurmaId");
 
-                    b.ToTable("Disciplinas");
+                    b.ToTable("Disciplinas", (string)null);
                 });
 
             modelBuilder.Entity("API_APSNET.Models.Professor", b =>
@@ -166,7 +166,7 @@ namespace API_APSNET.Migrations
 
                     b.HasIndex("DisciplinaId");
 
-                    b.ToTable("Professores");
+                    b.ToTable("Professores", (string)null);
                 });
 
             modelBuilder.Entity("API_APSNET.Models.Tarefa", b =>
@@ -194,7 +194,7 @@ namespace API_APSNET.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tarefas");
+                    b.ToTable("Tarefas", (string)null);
                 });
 
             modelBuilder.Entity("API_APSNET.Models.Turma", b =>
@@ -211,7 +211,7 @@ namespace API_APSNET.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Turmas");
+                    b.ToTable("Turmas", (string)null);
                 });
 
             modelBuilder.Entity("API_APSNET.Models.AlunoDisciplina", b =>

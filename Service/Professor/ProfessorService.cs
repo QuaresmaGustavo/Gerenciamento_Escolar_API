@@ -1,7 +1,10 @@
 ﻿using API_APSNET.Data;
 using API_APSNET.DTO;
-using API_APSNET.Models;
+using API_APSNET.Enum;
+using API_APSNET.Models.Configuracao;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace API_APSNET.Service.Professor
 {
@@ -15,12 +18,11 @@ namespace API_APSNET.Service.Professor
             ResponseModel<List<Models.Professor>> resposta = new ResponseModel<List<Models.Professor>>();
             try
             {
-                var professor = await _context.Professores.FirstOrDefaultAsync(p => p.Id == professorEditado.Id);
+                var professor = await _context.Professores.FirstOrDefaultAsync(p => p.Id == professorEditado.Id && p.Cargo == Cargo.Professor);
 
                 if (professor != null){
                     if (professor.Nome != null){ professor.Nome = professorEditado.Nome;}
                     if (professor.Idade != null) { professor.Idade = professorEditado.Idade.Value; }
-                    if (professor.Formacao != null) { professor.Formacao = professorEditado.Formacao; }
                     if (professor.DisciplinaId != null) { professor.DisciplinaId = professorEditado.IdDisciplina; }
                 }
                 else{
@@ -43,7 +45,7 @@ namespace API_APSNET.Service.Professor
             ResponseModel<Models.Professor> resposta = new ResponseModel<Models.Professor>();
             try
             {
-                var professor = await _context.Professores.FirstOrDefaultAsync(p => p.Nome == nome);
+                var professor = await _context.Professores.FirstOrDefaultAsync(p => p.Nome == nome && p.Cargo == Cargo.Professor);
                 resposta.Dados = professor;
                 return resposta;
             }
@@ -70,7 +72,7 @@ namespace API_APSNET.Service.Professor
             }
         }
 
-        public async Task<ResponseModel<Models.Professor>> CadastrarProfessor(ProfessorDTO professor)
+         public async Task<ResponseModel<Models.Professor>> CadastrarProfessor(ProfessorDTO professor)
         {
             ResponseModel<Models.Professor> resposta = new ResponseModel<Models.Professor>();
             try
@@ -82,13 +84,17 @@ namespace API_APSNET.Service.Professor
                     return resposta;
                 }
 
+                var hmac = new HMACSHA512();
+
                 var novoProfessor = new Models.Professor()
                 {
                     Nome = professor.Nome,
                     Idade = professor.Idade.Value,
                     DisciplinaId = professor.IdDisciplina,
-                    Formacao = professor.Formacao,
-                    Registro = DateOnly.FromDateTime(DateTime.Now)
+                    Registro = DateOnly.FromDateTime(DateTime.Now),
+                    Login = professor.Login,
+                    Senha = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(professor.Senha))),
+                    Cargo = (Cargo) professor.Cargo,
                 };
                 _context.Add(novoProfessor);
                 await _context.SaveChangesAsync();

@@ -2,12 +2,8 @@
 
 namespace API_APSNET.Models
 {
-    public class Aluno
+    public class Aluno : Usuario
     {
-        public int Id {get; set; }
-        public string Nome { get; set; }
-        public int Idade { get; set; }
-
         [JsonIgnore]
         public List<AlunoDisciplina> Disciplinas { get; set; }
 

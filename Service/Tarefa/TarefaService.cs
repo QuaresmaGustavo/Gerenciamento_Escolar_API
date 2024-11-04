@@ -1,6 +1,6 @@
 ﻿using API_APSNET.Data;
 using API_APSNET.DTO;
-using API_APSNET.Models;
+using API_APSNET.Models.Configuracao;
 using API_APSNET.Service.Disciplina;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

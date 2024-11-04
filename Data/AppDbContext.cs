@@ -11,6 +11,7 @@ namespace API_APSNET.Data
         public DbSet<Disciplina> Disciplinas { get; set; }
         public DbSet<Professor> Professores { get; set; }
         public DbSet<Aluno> Alunos { get; set; }
+        public DbSet<Usuario> Administrador { get; set; }
         public DbSet<AlunoDisciplina> AlunoDisciplina { get; set; }
         public DbSet<Tarefa> Tarefas { get; set; }
         public DbSet<AlunoTarefaDisciplina> AlunoTarefaDisciplinas { get; set; }

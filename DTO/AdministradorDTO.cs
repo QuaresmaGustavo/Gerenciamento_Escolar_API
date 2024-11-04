@@ -1,9 +1,8 @@
 ﻿using API_APSNET.Enum;
-using System.Security.Cryptography;
 
 namespace API_APSNET.DTO
 {
-    public class AlunoDTO
+    public class AdministradorDTO
     {
         public int? Id { get; set; }
         public string? Nome { get; set; }
