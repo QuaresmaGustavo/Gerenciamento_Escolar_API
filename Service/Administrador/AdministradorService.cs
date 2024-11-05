@@ -12,9 +12,9 @@ namespace API_APSNET.Service.Administrador
     {
         private readonly AppDbContext _context;
         public AdministradorService(AppDbContext context) { _context = context; }
-        public async Task<ResponseModel<List<Models.Usuario>>> AtualizarAdmin(AdministradorDTO adminEditado)
+        public async Task<ResponseModel<List<Models.Administrador>>> AtualizarAdmin(AdministradorDTO adminEditado)
         {
-            ResponseModel<List<Models.Usuario>> resposta = new ResponseModel<List<Models.Usuario>>();
+            ResponseModel<List<Models.Administrador>> resposta = new ResponseModel<List<Models.Administrador>>();
             try
             {
                 var admin = await _context.Administrador.FirstOrDefaultAsync(a => a.Id == adminEditado.Id);
@@ -23,10 +23,12 @@ namespace API_APSNET.Service.Administrador
                 {
                     if (admin.Nome != null) { admin.Nome = adminEditado.Nome; }
                     if (admin.Idade != null) { admin.Idade = adminEditado.Idade; }
+                    if (admin.Login != null) { admin.Login = adminEditado.Login; }
+                    if (admin.Senha != null) { admin.Senha = adminEditado.Senha; }
                 }
                 else
                 {
-                    resposta.Mensagem = "Turma não encontrada!";
+                    resposta.Mensagem = "administrador não encontrada!";
                     return resposta;
                 }
 
@@ -41,9 +43,9 @@ namespace API_APSNET.Service.Administrador
             }
         }
 
-        public async Task<ResponseModel<Models.Usuario>> BuscarAdminPorNome(string nome)
+        public async Task<ResponseModel<Models.Administrador>> BuscarAdminPorNome(string nome)
         {
-            ResponseModel<Models.Usuario> resposta = new ResponseModel<Models.Usuario>();
+            ResponseModel<Models.Administrador> resposta = new ResponseModel<Models.Administrador>();
             try
             {
                 var admin = await _context.Administrador.FirstOrDefaultAsync(a => a.Nome == nome);
@@ -57,9 +59,9 @@ namespace API_APSNET.Service.Administrador
             }
         }
 
-        public async Task<ResponseModel<List<Models.Usuario>>> BuscarTodasAdmins(Paginacao paginaParametros)
+        public async Task<ResponseModel<List<Models.Administrador>>> BuscarTodasAdmins(Paginacao paginaParametros)
         {
-            ResponseModel<List<Models.Usuario>> resposta = new ResponseModel<List<Models.Usuario>>();
+            ResponseModel<List<Models.Administrador>> resposta = new ResponseModel<List<Models.Administrador>>();
             try
             {
                 var admin = await _context.Administrador.Skip(paginaParametros.Pagina).Take(paginaParametros.quantidade).ToListAsync();
@@ -73,15 +75,15 @@ namespace API_APSNET.Service.Administrador
             }
         }
 
-        public async Task<ResponseModel<Models.Usuario>> CadastrarAdmin(AdministradorDTO admin)
+        public async Task<ResponseModel<Models.Administrador>> CadastrarAdmin(AdministradorDTO admin)
         {
-            ResponseModel<Models.Usuario> resposta = new ResponseModel<Models.Usuario>();
+            ResponseModel<Models.Administrador> resposta = new ResponseModel<Models.Administrador>();
             try
             {
                 var verificarAdmin = await BuscarAdminPorNome(admin.Nome);
                 if (verificarAdmin.Dados != null && verificarAdmin.Dados.Nome.Equals(admin.Nome))
                 {
-                    resposta.Mensagem = "Esta admin ja existe!";
+                    resposta.Mensagem = "Esta administrador ja existe!";
                     return resposta;
                 }
 
@@ -99,7 +101,8 @@ namespace API_APSNET.Service.Administrador
                 _context.Add(novoAdmin);
                 await _context.SaveChangesAsync();
 
-                resposta.Dados = await _context.Alunos.OrderByDescending(a => a.Nome == admin.Nome).FirstOrDefaultAsync();
+                resposta.Dados = await _context.Administrador.OrderByDescending(a => a.Nome == admin.Nome).FirstOrDefaultAsync();
+                resposta.Mensagem = "Administrador cadastrado com sucesso!";
                 return resposta;
             }
             catch (Exception ex)
@@ -109,9 +112,9 @@ namespace API_APSNET.Service.Administrador
             }
         }
 
-        public async Task<ResponseModel<List<Models.Usuario>>> DeletarAdmin(int id)
+        public async Task<ResponseModel<List<Models.Administrador>>> DeletarAdmin(int id)
         {
-            ResponseModel<List<Models.Usuario>> resposta = new ResponseModel<List<Models.Usuario>>();
+            ResponseModel<List<Models.Administrador>> resposta = new ResponseModel<List<Models.Administrador>>();
             try
             {
                 var admin = await _context.Administrador.FirstOrDefaultAsync(a => a.Id == id);
@@ -123,11 +126,11 @@ namespace API_APSNET.Service.Administrador
                 }
                 else
                 {
-                    resposta.Mensagem = "Admin não encontrada!";
+                    resposta.Mensagem = "Administrador não encontrada!";
                     return resposta;
                 }
 
-                resposta.Dados = await _context.Administrador.ToListAsync();
+                resposta.Mensagem = "Administrador deletado com sucesso!";
                 return resposta;
             }
             catch (Exception ex)

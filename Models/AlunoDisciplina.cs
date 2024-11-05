@@ -7,7 +7,7 @@ namespace API_APSNET.Models
         public int IdAluno { get; set; }
 
         [JsonIgnore]
-        public Administrador Aluno { get; set; }
+        public Aluno Aluno { get; set; }
 
         public int IdDisciplina { get; set; }
 

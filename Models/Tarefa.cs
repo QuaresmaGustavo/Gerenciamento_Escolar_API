@@ -9,10 +9,8 @@ namespace API_APSNET.Models
         public string Tipo { get; set; }
         public string Descricao { get; set; }
         public int PontuacaoMax { get; set; }
-
         [JsonIgnore]
         public Arquivo arquivo { get; set; }
-
         [JsonIgnore]
         public List<AlunoTarefaDisciplina> AlunoTarefaDisciplinas { get; set; }
     }

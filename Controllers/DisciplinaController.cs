@@ -29,7 +29,7 @@ namespace API_APSNET.Controllers
         }
 
         [HttpGet("aluno")]
-        public async Task<ActionResult<ResponseModel<List<Models.Administrador>>>> BuscarAlunoPelaDisciplina(int disciplinaID)
+        public async Task<ActionResult<ResponseModel<List<Models.Aluno>>>> BuscarAlunoPelaDisciplina(int disciplinaID)
         {
             return await _DisciplinaService.BuscarAlunoPelaDisciplina(disciplinaID);
         }

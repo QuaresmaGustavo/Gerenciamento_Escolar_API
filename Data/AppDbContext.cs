@@ -1,4 +1,5 @@
-﻿using API_APSNET.Models;
+﻿using API_APSNET.Enum;
+using API_APSNET.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace API_APSNET.Data
@@ -11,7 +12,7 @@ namespace API_APSNET.Data
         public DbSet<Disciplina> Disciplinas { get; set; }
         public DbSet<Professor> Professores { get; set; }
         public DbSet<Aluno> Alunos { get; set; }
-        public DbSet<Usuario> Administrador { get; set; }
+        public DbSet<Administrador> Administrador { get; set; }
         public DbSet<AlunoDisciplina> AlunoDisciplina { get; set; }
         public DbSet<Tarefa> Tarefas { get; set; }
         public DbSet<AlunoTarefaDisciplina> AlunoTarefaDisciplinas { get; set; }
@@ -19,6 +20,8 @@ namespace API_APSNET.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //ManyToMany - Aluno/Disciplina
             modelBuilder.Entity<AlunoDisciplina>()
                 .HasKey(ad => new { ad.IdAluno, ad.IdDisciplina });

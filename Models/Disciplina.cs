@@ -8,10 +8,8 @@ namespace API_APSNET.Models
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public int TurmaId { get; set; }
-
         [JsonIgnore]
         public List<AlunoDisciplina> Alunos { get; set; }
-
         [JsonIgnore]
         public List<AlunoTarefaDisciplina> Tarefas { get; set; }
     }

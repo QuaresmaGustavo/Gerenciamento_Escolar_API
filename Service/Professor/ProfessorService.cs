@@ -22,7 +22,7 @@ namespace API_APSNET.Service.Professor
 
                 if (professor != null){
                     if (professor.Nome != null){ professor.Nome = professorEditado.Nome;}
-                    if (professor.Idade != null) { professor.Idade = professorEditado.Idade.Value; }
+                    if (professor.Idade != null) { professor.Idade = professorEditado.Idade; }
                     if (professor.DisciplinaId != null) { professor.DisciplinaId = professorEditado.IdDisciplina; }
                 }
                 else{
@@ -89,7 +89,7 @@ namespace API_APSNET.Service.Professor
                 var novoProfessor = new Models.Professor()
                 {
                     Nome = professor.Nome,
-                    Idade = professor.Idade.Value,
+                    Idade = professor.Idade,
                     DisciplinaId = professor.IdDisciplina,
                     Registro = DateOnly.FromDateTime(DateTime.Now),
                     Login = professor.Login,

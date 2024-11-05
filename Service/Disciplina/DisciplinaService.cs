@@ -55,9 +55,9 @@ namespace API_APSNET.Service.Disciplina
             }
         }
 
-        public async Task<ResponseModel<List<Models.Administrador>>> BuscarAlunoPelaDisciplina(int disciplinaID)
+        public async Task<ResponseModel<List<Models.Aluno>>> BuscarAlunoPelaDisciplina(int disciplinaID)
         {
-            ResponseModel<List<Models.Administrador>> resposta = new ResponseModel<List<Models.Administrador>>();
+            ResponseModel<List<Models.Aluno>> resposta = new ResponseModel<List<Models.Aluno>>();
             try
             {
                 
