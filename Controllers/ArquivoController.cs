@@ -2,7 +2,7 @@
 using API_APSNET.Models;
 using API_APSNET.Models.Configuracao;
 using API_APSNET.Service.Arquivo;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_APSNET.Controllers
@@ -27,12 +27,14 @@ namespace API_APSNET.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador, Professor")]
         public async Task<ResponseModel<Arquivo>> CarregarArquivo([FromForm] ArquivoDTO arquivo)
         {
             return await _service.CarregarArquivo(arquivo);
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Administrador, Professor")]
         public async Task<ResponseModel<Arquivo>> DeletarArquivo([FromQuery] int id)
         {
             return await _service.DeletarArquivo(id);

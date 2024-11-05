@@ -1,4 +1,5 @@
 using API_APSNET.Data;
+using API_APSNET.Service;
 using API_APSNET.Service.Administrador;
 using API_APSNET.Service.Aluno;
 using API_APSNET.Service.AlunoDisciplina;
@@ -8,7 +9,10 @@ using API_APSNET.Service.Disciplina;
 using API_APSNET.Service.Professor;
 using API_APSNET.Service.Tarefa;
 using API_APSNET.Service.Turma;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +36,28 @@ builder.Services.AddScoped<TarefaService>();
 builder.Services.AddScoped<AlunoTarefaDisciplinaService>();
 builder.Services.AddScoped<ArquivoService>();
 builder.Services.AddScoped<AdministradorService>();
+builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<TokenService>();
+
+
+var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtSettings:SecretKey"]);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
 
 
 var app = builder.Build();
@@ -45,6 +71,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

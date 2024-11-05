@@ -89,7 +89,7 @@ namespace API_APSNET.Service.Administrador
 
                 var hmac = new HMACSHA512();
 
-                var novoAdmin = new Models.Usuario()
+                var novoAdmin = new Models.Administrador()
                 {
                     Nome = admin.Nome,
                     Idade = admin.Idade,

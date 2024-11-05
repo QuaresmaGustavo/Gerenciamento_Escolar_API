@@ -2,7 +2,7 @@
 
 namespace API_APSNET.DTO
 {
-    public class AdministradorDTO
+    public class UsuarioDTO
     {
         public int? Id { get; set; }
         public string? Nome { get; set; }

@@ -1,6 +1,7 @@
 ﻿using API_APSNET.DTO;
 using API_APSNET.Models.Configuracao;
 using API_APSNET.Service.Professor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_APSNET.Controllers
@@ -17,6 +18,7 @@ namespace API_APSNET.Controllers
         }
 
         [HttpGet("todos")]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> BuscarTodasOsProfessores([FromQuery] Paginacao paginaParametros)
         {
             return await _ProfessorService.BuscarTodasOsProfessores(paginaParametros);
@@ -29,18 +31,21 @@ namespace API_APSNET.Controllers
         }
 
         [HttpPost("Cadastrar")]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<ResponseModel<Models.Professor>>> CadastrarProfessor([FromBody] ProfessorDTO professor)
         {
             return await _ProfessorService.CadastrarProfessor(professor);
         }
 
         [HttpPatch("atualizar")]
+        [Authorize(Roles = "Administrador, Professor")]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> AtualizarProfessor([FromBody] ProfessorDTO professorEditado)
         {
             return await _ProfessorService.AtualizarProfessor(professorEditado);
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<ResponseModel<List<Models.Professor>>>> DeletarProfessor(int id)
         {
             return await _ProfessorService.DeletarProfessor(id);

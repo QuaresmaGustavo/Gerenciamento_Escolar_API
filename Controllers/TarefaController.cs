@@ -2,6 +2,7 @@
 using API_APSNET.Models;
 using API_APSNET.Models.Configuracao;
 using API_APSNET.Service.Tarefa;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_APSNET.Controllers
@@ -17,23 +18,26 @@ namespace API_APSNET.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseModel<List<Tarefa>>>> CadastrarTarefasNaDisciplina(int disciplinaId)
+        public async Task<ActionResult<ResponseModel<List<Tarefa>>>> BuscarTarefasDaDisciplina(int disciplinaId)
         {
             return await _service.BuscarTarefasDaDisciplina(disciplinaId);
         }
 
         [HttpPost]
+        [Authorize(Roles = "Professor")]
         public async Task<ActionResult<ResponseModel<Tarefa>>> CadastrarTarefasNaDisciplina([FromBody] TarefaDTO dados, int disciplinaId){
             return await _service.CadastrarTarefasNaDisciplina(dados, disciplinaId);
         }
 
-        [HttpPatch("{id}")]
-        public async Task<ActionResult<ResponseModel<Tarefa>>> AtualizarTarefa(int id,[FromBody] TarefaDTO dados){
+        [HttpPatch]
+        [Authorize(Roles = "Professor")]
+        public async Task<ActionResult<ResponseModel<Tarefa>>> AtualizarTarefa([FromQuery] int id,[FromBody] TarefaDTO dados){
             return await _service.AtualizarTarefa(id, dados);
         }
 
-        [HttpDelete()]
-        public async Task<ActionResult<ResponseModel<Tarefa>>> RemoverTarefa(int id){
+        [HttpDelete]
+        [Authorize(Roles = "Professor")]
+        public async Task<ActionResult<ResponseModel<Tarefa>>> RemoverTarefa([FromQuery] int id){
             return await _service.RemoverTarefa(id);
         }
     }

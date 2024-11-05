@@ -1,6 +1,7 @@
 ﻿using API_APSNET.DTO;
 using API_APSNET.Models.Configuracao;
 using API_APSNET.Service.Disciplina;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_APSNET.Controllers
@@ -11,8 +12,7 @@ namespace API_APSNET.Controllers
     {
         private readonly DisciplinaService _DisciplinaService;
 
-        public DisciplinaController(DisciplinaService disciplinaService)
-        {
+        public DisciplinaController(DisciplinaService disciplinaService) {
             _DisciplinaService = disciplinaService;
         }
 
@@ -35,19 +35,22 @@ namespace API_APSNET.Controllers
         }
 
         [HttpPost("GerarDisciplina")]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<ResponseModel<Models.Disciplina>>> GerarDisciplina(DisciplinaDTO disciplina)
         {
             return await _DisciplinaService.GerarDisciplina(disciplina);
         }
 
         [HttpPut("Atualizar")]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> AtualizarDisciplina(DisciplinaDTO disciplinaEditada)
         {
             return await _DisciplinaService.AtualizarDisciplina(disciplinaEditada);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> DeletarDisciplina(int id)
+        [HttpDelete]
+        [Authorize(Roles = "Administrador")]
+        public async Task<ActionResult<ResponseModel<List<Models.Disciplina>>>> DeletarDisciplina([FromQuery] int id)
         {
             return await _DisciplinaService.DeletarDisciplina(id);
         }
